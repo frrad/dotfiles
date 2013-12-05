@@ -1,0 +1,5 @@
+hardstatus alwayslastline "%{b kw}%H %{r}%1` %{w}| %{b}%C %{w}| %{b}%Y-%m-%d %{w}| %{-b kw}%u %-Lw%{= rW}%50> %n%f %t %{-}%+Lw%< %{gk}%=%c"
+
+defscrollback 5000
+
+vbell off
