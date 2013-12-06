@@ -89,6 +89,11 @@ if ! shopt -oq posix; then
   fi
 fi
 
+#Turn on Num Lock in TTYs
+if [[ $( tty ) == /dev/tty? ]]; then
+    setleds +num
+fi
+
 export GOPATH="/home/frederick/Projects/project-euler"
 export PRINTER="HL2270DW"
-export EDITOR="emacs"
+export EDITOR="emacs -nw"
