@@ -11,7 +11,7 @@
 ;Default fill width 70 is too small
 (setq-default fill-column 100)
 
-;Backup File settings
+;;Backup File settings
 (defvar --bu-directory (concat user-emacs-directory "saves"))
 (if (not (file-exists-p --bu-directory))
         (make-directory --bu-directory t))
@@ -26,11 +26,17 @@
    version-control t         ; version numbers for backup files
 )
 
-;Tex / AUTex related settings
+;;Tex / AUTex related settings
 (setq
    TeX-parse-self t         ; Enable parse on load.
    TeX-auto-save t          ; Enable parse on save.
    TeX-PDF-mode t           ; output PDFs (not DVI)
 )
+
+;Set some shortcuts in math-mode
+(setq LaTeX-math-list '(
+    (?R "mathbb{R} " nil)
+))
+
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)   ; enable LaTeX Math mode by default
 (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill) ; and auto-fill mode
