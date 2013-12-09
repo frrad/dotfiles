@@ -2,9 +2,11 @@
 ; 5 December 20131
 
 ;;GENERAL CUSTOMIZATIONS
-
 (setq inhibit-startup-screen t)    ;Skip emacs splash screen
 (put 'upcase-region 'disabled nil) ;Turn on upcase-region
+;Turn off menu-bar but only if in a terminal
+(if (not (window-system))  (menu-bar-mode -1)) 
+
 
 ;Put `customize' generated settings in their own file
 (setq custom-file "~/.emacs.d/custom.el")
@@ -35,7 +37,6 @@
   (set-face-attribute 'default nil :family "Inconsolata")
   (set-face-attribute 'default nil :height 120)
 )
-
 
 ;;TEX / AUTEX RELATED SETTINGS
 
