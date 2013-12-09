@@ -1,12 +1,14 @@
 ; Frederick Robinson
 ; 5 December 20131
 
+;;GENERAL CUSTOMIZATIONS
+
+(setq inhibit-startup-screen t)    ;Skip emacs splash screen
+(put 'upcase-region 'disabled nil) ;Turn on upcase-region
+
 ;Put `customize' generated settings in their own file
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
-
-;Set default window size
-(if (window-system) (set-frame-size (selected-frame) 128 50))
 
 ;Default fill width 70 is too small
 (setq-default fill-column 100)
@@ -26,7 +28,17 @@
    version-control t         ; version numbers for backup files
 )
 
-;;Tex / AUTex related settings
+;;FONT / WINDOW SIZE FOR WINDOWED SETUP
+
+(when (window-system)
+  (set-frame-size (selected-frame) 128 50)
+  (set-face-attribute 'default nil :family "Inconsolata")
+  (set-face-attribute 'default nil :height 120)
+)
+
+
+;;TEX / AUTEX RELATED SETTINGS
+
 (setq
    TeX-parse-self t         ; Enable parse on load.
    TeX-auto-save t          ; Enable parse on save.
@@ -40,3 +52,4 @@
 
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)   ; enable LaTeX Math mode by default
 (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill) ; and auto-fill mode
+
