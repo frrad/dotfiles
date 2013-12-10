@@ -13,6 +13,7 @@
 (put 'upcase-region 'disabled nil) ; Turn on upcase-region
 (ido-mode t)                       ; ido-mode!
 (setq-default fill-column 100)     ; Default fill width 70 is too small
+(setenv "PAGER" "/bin/cat")        ; so man works in terminal  
 ;Turn off menu-bar but only if in a terminal
 (if (not window-system) (menu-bar-mode -1)) 
 
