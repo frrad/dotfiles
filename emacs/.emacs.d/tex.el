@@ -12,6 +12,7 @@
 ;Set some shortcuts in math-mode
 (setq LaTeX-math-list '(
     (?R "mathbb{R} " nil)
+    (?C "mathbb{C} " nil)
 ))
 
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)   ; enable LaTeX Math mode by default
