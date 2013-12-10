@@ -1,16 +1,18 @@
 ; Frederick Robinson
 ; 5 December 2013
 
+;;LOAD OTHER SETTING FILES
+;Customize generated settings
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
+;LaTeX / AUCTeX / TeX related settings
+(load "~/.emacs.d/tex.el")
+
 ;;GENERAL CUSTOMIZATIONS
 (setq inhibit-startup-screen t)    ;Skip emacs splash screen
 (put 'upcase-region 'disabled nil) ;Turn on upcase-region
 ;Turn off menu-bar but only if in a terminal
 (if (not window-system) (menu-bar-mode -1)) 
-
-
-;Put `customize' generated settings in their own file
-(setq custom-file "~/.emacs.d/custom.el")
-(load custom-file)
 
 ;Default fill width 70 is too small
 (setq-default fill-column 100)
@@ -37,20 +39,3 @@
   (set-face-attribute 'default nil :family "Inconsolata")
   (set-face-attribute 'default nil :height 120)
 )
-
-;;TEX / AUTEX RELATED SETTINGS
-
-(setq
-   TeX-parse-self t         ; Enable parse on load.
-   TeX-auto-save t          ; Enable parse on save.
-   TeX-PDF-mode t           ; output PDFs (not DVI)
-)
-
-;Set some shortcuts in math-mode
-(setq LaTeX-math-list '(
-    (?R "mathbb{R} " nil)
-))
-
-(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)   ; enable LaTeX Math mode by default
-(add-hook 'LaTeX-mode-hook 'turn-on-auto-fill) ; and auto-fill mode
-
