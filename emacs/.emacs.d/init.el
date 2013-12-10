@@ -9,15 +9,14 @@
 (load "~/.emacs.d/tex.el")
 
 ;;GENERAL CUSTOMIZATIONS
-(setq inhibit-startup-screen t)    ;Skip emacs splash screen
-(put 'upcase-region 'disabled nil) ;Turn on upcase-region
+(setq inhibit-startup-screen t)    ; Skip emacs splash screen
+(put 'upcase-region 'disabled nil) ; Turn on upcase-region
+(ido-mode t)                       ; ido-mode!
+(setq-default fill-column 100)     ; Default fill width 70 is too small
 ;Turn off menu-bar but only if in a terminal
 (if (not window-system) (menu-bar-mode -1)) 
 
-;Default fill width 70 is too small
-(setq-default fill-column 100)
-
-;;Backup File settings
+;;BACKUP FILE SETTINGS
 (defvar --bu-directory (concat user-emacs-directory "saves"))
 (if (not (file-exists-p --bu-directory))
         (make-directory --bu-directory t))
@@ -33,7 +32,6 @@
 )
 
 ;;FONT / WINDOW SIZE FOR WINDOWED SETUP
-
 (when (window-system)
   (set-frame-size (selected-frame) 128 50)
   (set-face-attribute 'default nil :family "Inconsolata")
