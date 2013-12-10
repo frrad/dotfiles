@@ -1,11 +1,11 @@
 ; Frederick Robinson
-; 5 December 20131
+; 5 December 2013
 
 ;;GENERAL CUSTOMIZATIONS
 (setq inhibit-startup-screen t)    ;Skip emacs splash screen
 (put 'upcase-region 'disabled nil) ;Turn on upcase-region
 ;Turn off menu-bar but only if in a terminal
-(if (not (window-system))  (menu-bar-mode -1)) 
+(if (not window-system) (menu-bar-mode -1)) 
 
 
 ;Put `customize' generated settings in their own file
