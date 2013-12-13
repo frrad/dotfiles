@@ -11,6 +11,7 @@
 ;;GENERAL CUSTOMIZATIONS
 (setq inhibit-startup-screen t)    ; Skip emacs splash screen
 (put 'upcase-region 'disabled nil) ; Turn on upcase-region
+(put 'downcase-region 'disabled nil)
 (ido-mode t)                       ; ido-mode!
 (setq-default fill-column 100)     ; Default fill width 70 is too small
 (setenv "PAGER" "/bin/cat")        ; so man works in terminal  
@@ -38,3 +39,4 @@
   (set-face-attribute 'default nil :family "Inconsolata")
   (set-face-attribute 'default nil :height 120)
 )
+
