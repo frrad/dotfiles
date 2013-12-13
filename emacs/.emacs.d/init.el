@@ -1,12 +1,24 @@
 ; Frederick Robinson
 ; 5 December 2013
 
-;;LOAD OTHER SETTING FILES
+
+;Load path to include subdirectories of .emacs.d
+(let ((default-directory "~/.emacs.d/")) 
+  (normal-top-level-add-subdirs-to-load-path))
+
+;;LOAD OTHER FILES
 ;Customize generated settings
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 ;LaTeX / AUCTeX / TeX related settings
 (load "~/.emacs.d/tex.el")
+(require 'smex)
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;; This is your old M-x.
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+(setq smex-save-file "~/.emacs.d/.smex-items") ; smex data inside .emacs.d
+
 
 ;;GENERAL CUSTOMIZATIONS
 (setq inhibit-startup-screen t)    ; Skip emacs splash screen
