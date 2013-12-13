@@ -3,3 +3,5 @@
 	name = Frederick Robinson
 [push]
 	default = simple
+[alias]
+	clone = clone --recursive
