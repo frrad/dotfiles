@@ -20,6 +20,10 @@
 (setq smex-save-file "~/.emacs.d/.smex-items") ; smex data inside .emacs.d
 (require 'rainbow-delimiters)
 (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
+(require 'yasnippet)
+(yas-global-mode t)
+
+
 
 ;;GENERAL CUSTOMIZATIONS
 (setq inhibit-startup-screen t)    ; Skip emacs splash screen

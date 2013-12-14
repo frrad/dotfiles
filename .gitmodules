@@ -4,3 +4,6 @@
 [submodule "emacs/.emacs.d/rainbow"]
 	path = emacs/.emacs.d/rainbow
 	url = git@github.com:jlr/rainbow-delimiters.git
+[submodule "emacs/.emacs.d/yasnippet"]
+	path = emacs/.emacs.d/yasnippet
+	url = git@github.com:capitaomorte/yasnippet.git
