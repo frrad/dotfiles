@@ -18,7 +18,8 @@
 ;; This is your old M-x.
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 (setq smex-save-file "~/.emacs.d/.smex-items") ; smex data inside .emacs.d
-
+(require 'rainbow-delimiters)
+(add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 
 ;;GENERAL CUSTOMIZATIONS
 (setq inhibit-startup-screen t)    ; Skip emacs splash screen

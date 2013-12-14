@@ -1,3 +1,6 @@
 [submodule "emacs/.emacs.d/smex"]
 	path = emacs/.emacs.d/smex
 	url = git@github.com:nonsequitur/smex.git
+[submodule "emacs/.emacs.d/rainbow"]
+	path = emacs/.emacs.d/rainbow
+	url = git@github.com:jlr/rainbow-delimiters.git
