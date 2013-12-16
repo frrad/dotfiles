@@ -4,6 +4,7 @@
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  '(ido-save-directory-list-file "~/.emacs.d/.ido.last")
+ '(rcirc-default-nick "frrad")
  '(vc-follow-symlinks t))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.

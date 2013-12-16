@@ -23,7 +23,8 @@
 (require 'yasnippet)
 (yas-global-mode t)
 
-(setq snake-score-file "~/snake-scores")
+(setq snake-score-file "~/.emacs.d/snake-scores")
+(setq tetris-score-file "~/.emacs.d/tetris-scores")
 
 ;;GENERAL CUSTOMIZATIONS
 (setq inhibit-startup-screen t)    ; Skip emacs splash screen
