@@ -89,7 +89,7 @@ fi
 
 export GOPATH="/home/frederick/Projects/project-euler"
 export PRINTER="HL2270DW"
-export EDITOR="emacs -nw"
+export EDITOR="emacsclient -nw -a \"\" -c"
 #No more .lesshst clutter
 export LESSHISTFILE="-"
 
