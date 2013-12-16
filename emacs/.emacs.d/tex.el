@@ -18,4 +18,4 @@
 
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)   ; enable LaTeX Math mode by default
 (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill) ; and auto-fill mode
-
+(add-hook 'LaTeX-mode-hook 'flyspell-mode)     ; and flyspell!
