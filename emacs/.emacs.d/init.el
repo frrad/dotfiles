@@ -22,6 +22,9 @@
 (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 (require 'yasnippet)
 (yas-global-mode t)
+(require 'go-mode-load)
+(add-hook 'before-save-hook 'gofmt-before-save)
+
 
 (setq snake-score-file "~/.emacs.d/snake-scores")
 (setq tetris-score-file "~/.emacs.d/tetris-scores")

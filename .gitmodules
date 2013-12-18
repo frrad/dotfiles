@@ -7,3 +7,6 @@
 [submodule "emacs/.emacs.d/yasnippet"]
 	path = emacs/.emacs.d/yasnippet
 	url = git@github.com:capitaomorte/yasnippet.git
+[submodule "emacs/.emacs.d/go-mode"]
+	path = emacs/.emacs.d/go-mode
+	url = git@github.com:dominikh/go-mode.el.git
