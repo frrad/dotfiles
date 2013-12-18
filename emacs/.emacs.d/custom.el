@@ -5,6 +5,7 @@
   ;; If there is more than one, they won't work right.
  '(ido-save-directory-list-file "~/.emacs.d/.ido.last")
  '(rcirc-default-nick "frrad")
+ '(tab-width 4)
  '(vc-follow-symlinks t))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.

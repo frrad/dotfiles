@@ -24,7 +24,7 @@
 (yas-global-mode t)
 (require 'go-mode-load)
 (add-hook 'before-save-hook 'gofmt-before-save)
-
+(add-hook 'go-mode-hook 'flyspell-prog-mode)
 
 (setq snake-score-file "~/.emacs.d/snake-scores")
 (setq tetris-score-file "~/.emacs.d/tetris-scores")
