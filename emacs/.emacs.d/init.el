@@ -25,6 +25,10 @@
 (require 'go-mode-load)
 (add-hook 'before-save-hook 'gofmt-before-save)
 (add-hook 'go-mode-hook 'flyspell-prog-mode)
+(add-hook 'rcirc-mode-hook (lambda () (set (make-local-variable 'scroll-conservatively) 8192)))
+(add-hook 'rcirc-mode-hook (lambda () (flyspell-mode 1)))
+(global-set-key (kbd "C-x O") (lambda ()  (interactive) (other-window -1)))
+
 
 (setq snake-score-file "~/.emacs.d/snake-scores")
 (setq tetris-score-file "~/.emacs.d/tetris-scores")

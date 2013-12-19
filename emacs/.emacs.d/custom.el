@@ -5,7 +5,7 @@
   ;; If there is more than one, they won't work right.
  '(ido-save-directory-list-file "~/.emacs.d/.ido.last")
  '(rcirc-default-nick "frrad")
- '(rcirc-server-alist (quote (("irc.foonetic.net" :channels ("#xkcd")))))
+ '(rcirc-server-alist (quote (("home.frrad.com" :nick "Frederick" nil nil) ("irc.foonetic.net" :channels ("#xkcd")))))
  '(tab-width 4)
  '(vc-follow-symlinks t))
 (custom-set-faces
