@@ -1,12 +1,12 @@
 [submodule "emacs/.emacs.d/smex"]
 	path = emacs/.emacs.d/smex
-	url = git@github.com:nonsequitur/smex.git
+	url = https://github.com/nonsequitur/smex.git
 [submodule "emacs/.emacs.d/rainbow"]
 	path = emacs/.emacs.d/rainbow
-	url = git@github.com:jlr/rainbow-delimiters.git
+	url = https://github.com/jlr/rainbow-delimiters.git
 [submodule "emacs/.emacs.d/yasnippet"]
 	path = emacs/.emacs.d/yasnippet
-	url = git@github.com:capitaomorte/yasnippet.git
+	url = https://github.com/capitaomorte/yasnippet.git
 [submodule "emacs/.emacs.d/go-mode"]
 	path = emacs/.emacs.d/go-mode
-	url = git@github.com:dominikh/go-mode.el.git
+	url = https://github.com/dominikh/go-mode.el.git

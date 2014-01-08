@@ -4,8 +4,9 @@
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  '(ido-save-directory-list-file "~/.emacs.d/.ido.last")
+ '(org-startup-indented t)
  '(rcirc-default-nick "frrad")
- '(rcirc-server-alist (quote (("home.frrad.com" :nick "Frederick" nil nil) )))
+ '(rcirc-server-alist (quote (("home.frrad.com" :nick "Frederick" nil nil))))
  '(tab-width 4)
  '(vc-follow-symlinks t))
 (custom-set-faces
