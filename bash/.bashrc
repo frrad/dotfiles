@@ -28,8 +28,24 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
-PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-#PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+HOSTCOL=`python -c "
+import commands, md5
+colorTuples = zip( [0]*8 + [1]*8, range(30,39)*2 )
+hostname = commands.getoutput( 'hostname' )
+index = int(   md5.md5(hostname).hexdigest(), 16   ) % len(colorTuples)
+hostColor = r'%d;%dm' % colorTuples[index]
+print hostColor
+"`
+
+HOSTCOL="\[\033[$HOSTCOL\]"
+NOCOL='\[\033[00m\]'
+GREEN='\[\033[01;32m\]'
+BLUE='\[\033[01;34m\]'
+RED='\[\033[01;31m\]'
+
+PS1="${debian_chroot:+($debian_chroot)}$GREEN\u$NOCOL@$HOSTCOL\h$NOCOL:$BLUE\w"'`if [[ \$? != "0" ]]; then echo "'"$RED"'";  fi`'"\$$NOCOL "
+
+unset HOSTCOL NOCOL GREEN BLUE RED
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
