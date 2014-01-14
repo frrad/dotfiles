@@ -11,7 +11,7 @@ alias watchtex="latexmk -f -pdf -pvc"
 #Alias mosh to always use forwarded port
 alias mosh="mosh -p 60002"
 
-if ! which autossh > /dev/null; then
+if ! which autossh &> /dev/null; then
    alias ssh-tunnel="ssh -N -D 8080"
 else
    alias ssh-tunnel="autossh -N -D 8080"
