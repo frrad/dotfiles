@@ -88,6 +88,8 @@ if [[ $( tty ) == /dev/tty? ]]; then
     setleds +num
 fi
 
+eval `keychain --eval --agents ssh --noask --quiet`
+
 export GOPATH="/home/frederick/Projects/project-euler"
 export PRINTER="HL2270DW"
 export EDITOR="emacsclient -nw -a \"\" -c"

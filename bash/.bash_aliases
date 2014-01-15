@@ -20,3 +20,4 @@ else
    alias ssh-tunnel="autossh -N -D 8080"
 fi
 
+ssh-add -l &>/dev/null || alias ssh='ssh-add -l >/dev/null || ssh-add && unalias ssh; ssh'
