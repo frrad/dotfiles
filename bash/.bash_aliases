@@ -21,3 +21,9 @@ else
 fi
 
 ssh-add -l &>/dev/null || alias ssh='ssh-add -l >/dev/null || ssh-add && unalias ssh; ssh'
+
+function cutpdf() {
+	gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER -dFirstPage=$2  -dLastPage=$3 -sOutputFile=$2to$3-$1 $1
+}
+
+#export -f cutpdf
