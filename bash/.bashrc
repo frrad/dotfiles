@@ -19,9 +19,6 @@ shopt -s histappend
 HISTSIZE=1000
 HISTFILESIZE=2000
 
-# write to file immediately
-PROMPT_COMMAND='history -a; history -c; history -r'
-
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
@@ -32,10 +29,10 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
 fi
 
 HOSTCOL=`python -c "
-import commands, md5
+import commands, hashlib
 colorTuples = zip( [0]*8 + [1]*8, range(30,39)*2 )
 hostname = commands.getoutput( 'hostname' )
-index = int(   md5.md5(hostname).hexdigest(), 16   ) % len(colorTuples)
+index = int(   hashlib.md5(hostname).hexdigest(), 16   ) % len(colorTuples)
 hostColor = r'%d;%dm' % colorTuples[index]
 print hostColor
 "`
