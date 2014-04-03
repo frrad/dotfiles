@@ -12,6 +12,10 @@
 (load custom-file)
 ;LaTeX / AUCTeX / TeX related settings
 (load "~/.emacs.d/tex.el")
+;C++ Mode modifications
+(load "~/.emacs.d/cpp.el")
+
+(global-set-key (kbd "M-B") 'recompile)
 
 (require 'smex)
 (global-set-key (kbd "M-x") 'smex)
