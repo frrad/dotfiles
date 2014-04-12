@@ -30,3 +30,5 @@ function cutpdf() {
 
 #short for rsync resume... get it?
 alias rsoom='rsync --partial --progress --rsh=ssh'
+
+alias dekeith="sed  -e 's/\r/ /' -e 's/system(\"PAUSE\")/cin.get()/' <"
