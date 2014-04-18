@@ -33,6 +33,8 @@
 (require 'go-mode-load)
 (add-hook 'before-save-hook 'gofmt-before-save)
 (add-hook 'go-mode-hook 'flyspell-prog-mode)
+(add-hook 'go-mode-hook (lambda ()
+                          (local-set-key (kbd "M-.") 'godef-jump)))
 
 (autoload 'octave-mode "octave-mod" nil t)
 (setq auto-mode-alist (cons '("\\.m$" . octave-mode) auto-mode-alist))
@@ -43,6 +45,7 @@
             (if (eq window-system 'x)
                 (font-lock-mode 1))))
 
+;;rcirc-mode
 (add-hook 'rcirc-mode-hook (lambda () (set (make-local-variable 'scroll-conservatively) 8192)))
 (add-hook 'rcirc-mode-hook (lambda () (flyspell-mode 1)))
 (global-set-key (kbd "C-x O") (lambda ()  (interactive) (other-window -1)))
