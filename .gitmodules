@@ -10,3 +10,6 @@
 [submodule "emacs/.emacs.d/go-mode"]
 	path = emacs/.emacs.d/go-mode
 	url = https://github.com/dominikh/go-mode.el.git
+[submodule "emacs/.emacs.d/wolfram-mode"]
+	path = emacs/.emacs.d/wolfram-mode
+	url = git@github.com:kawabata/wolfram-mode.git
