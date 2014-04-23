@@ -45,6 +45,13 @@
             (if (eq window-system 'x)
                 (font-lock-mode 1))))
 
+;;CLANG
+(defun clang-before-save () 
+  (interactive) 
+  (when 
+	  (eq major-mode 'c++-mode) (clang-format-buffer)))
+(add-hook 'before-save-hook 'clang-before-save)
+
 ;;rcirc-mode
 (add-hook 'rcirc-mode-hook (lambda () (set (make-local-variable 'scroll-conservatively) 8192)))
 (add-hook 'rcirc-mode-hook (lambda () (flyspell-mode 1)))
@@ -53,6 +60,33 @@
 
 (setq snake-score-file "~/.emacs.d/snake-scores")
 (setq tetris-score-file "~/.emacs.d/tetris-scores")
+
+
+(eval-after-load 'dired
+  '(progn
+     (define-key dired-mode-map (kbd "_") 'my-dired-create-file)
+     (defun my-dired-create-file (file)
+       "Create a file called FILE.
+If FILE already exists, signal an error."
+       (interactive
+        (list (read-file-name "Create file: " (dired-current-directory))))
+       (let* ((expanded (expand-file-name file))
+              (try expanded)
+              (dir (directory-file-name (file-name-directory expanded)))
+              new)
+         (if (file-exists-p expanded)
+             (error "Cannot create file %s: file exists" expanded))
+         ;; Find the topmost nonexistent parent dir (variable `new')
+         (while (and try (not (file-exists-p try)) (not (equal new try)))
+           (setq new try
+                 try (directory-file-name (file-name-directory try))))
+         (when (not (file-exists-p dir))
+           (make-directory dir t))
+         (write-region "" nil expanded t)
+         (when new
+           (dired-add-file new)
+           (dired-move-to-filename))))))
+
 
 ;;GENERAL CUSTOMIZATIONS
 (setq inhibit-startup-screen t)    ; Skip emacs splash screen
