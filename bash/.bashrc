@@ -96,3 +96,4 @@ export EDITOR="emacsclient -nw -a \"\" -c"
 #No more .lesshst clutter
 export LESSHISTFILE="-"
 
+export PATH="$PATH:/home/frederick/Projects/bin"
