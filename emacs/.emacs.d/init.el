@@ -9,6 +9,8 @@
 (let ((default-directory "/usr/share/emacs/site-lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
 
+(byte-recompile-directory (expand-file-name "~/.emacs.d") 0)
+
 
 ;;LOAD OTHER FILES
 ;Customize generated settings
