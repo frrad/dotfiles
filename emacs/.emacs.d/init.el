@@ -5,6 +5,10 @@
 ;Load path to include subdirectories of .emacs.d
 (let ((default-directory "~/.emacs.d/")) 
   (normal-top-level-add-subdirs-to-load-path))
+;also add subdirectories of site-lisp
+(let ((default-directory "/usr/share/emacs/site-lisp/"))
+  (normal-top-level-add-subdirs-to-load-path))
+
 
 ;;LOAD OTHER FILES
 ;Customize generated settings
@@ -45,12 +49,19 @@
             (if (eq window-system 'x)
                 (font-lock-mode 1))))
 
+
 ;;CLANG
+(load "clang-format")
+
 (defun clang-before-save () 
   (interactive) 
   (when 
 	  (eq major-mode 'c++-mode) (clang-format-buffer)))
+
 (add-hook 'before-save-hook 'clang-before-save)
+
+
+
 
 ;;rcirc-mode
 (add-hook 'rcirc-mode-hook (lambda () (set (make-local-variable 'scroll-conservatively) 8192)))
@@ -98,6 +109,8 @@ If FILE already exists, signal an error."
 ;Turn off menu-bar but only if in a terminal
 (if (not window-system) (menu-bar-mode -1)) 
 
+(define-key help-map "a" 'apropos) ;slightly more results than default
+
 ;;BACKUP FILE SETTINGS
 (defvar --bu-directory (concat user-emacs-directory "saves"))
 (if (not (file-exists-p --bu-directory))
@@ -106,7 +119,7 @@ If FILE already exists, signal an error."
    make-backup-files t       ; backup of a file the first time it is saved
    backup-by-copying t       ; don't clobber symlinks
    backup-directory-alist
-   `(("." . ,--bu-directory)); backfup save path
+   `(("." . ,--bu-directory)); backup save path
    delete-old-versions t     ; delete excess backup files silently
    kept-new-versions 6
    kept-old-versions 2
