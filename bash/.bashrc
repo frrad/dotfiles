@@ -90,7 +90,7 @@ fi
 
 eval `keychain --eval --agents ssh --noask --quiet`
 
-export GOPATH="/home/frederick/Projects/project-euler"
+export GOPATH="/home/frederick/Projects/"
 export PRINTER="HL2270DW"
 export EDITOR="emacsclient -nw -a \"\" -c"
 #No more .lesshst clutter
