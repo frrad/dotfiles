@@ -70,6 +70,19 @@
 (add-hook 'rcirc-mode-hook (lambda () (flyspell-mode 1)))
 (global-set-key (kbd "C-x O") (lambda ()  (interactive) (other-window -1)))
 
+;;markdown-mode ($sudo apt-get install emacs-goodies-el)
+(autoload 'markdown-mode "markdown-mode"
+   "Major mode for editing Markdown files" t)
+
+(add-hook 'markdown-mode-hook
+            (lambda ()
+              (when buffer-file-name
+                (add-hook 'after-save-hook
+                          'check-parens
+                          nil t))))
+
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+
 
 (defun copy-line (arg)
   "Copy lines (as many as prefix argument) in the kill ring.
