@@ -28,7 +28,7 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
-HOSTCOL=`python -c "
+HOSTCOL=`python2 -c "
 import commands, hashlib
 colorTuples = zip( [0]*8 + [1]*8, range(30,39)*2 )
 hostname = commands.getoutput( 'hostname' )
@@ -97,3 +97,4 @@ export EDITOR="emacsclient -nw -a \"\" -c"
 export LESSHISTFILE="-"
 
 export PATH="$PATH:/home/frederick/Projects/bin"
+export PATH="$PATH:/home/frederick/bin"

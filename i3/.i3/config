@@ -157,11 +157,16 @@ bar {
 
 #hide_edge_borders both
 for_window [class="^Google-chrome"] border 1pixel
+for_window [class="^Chromium$"] border 1pixel
 for_window [class="^Gnome-terminal"] border 1pixel
 for_window [class="^mplayer2$"] border 1pixel
+for_window [class="^Xfce4-terminal$"] border 1pixel
+for_window [class="MPlayer"] border 1pixel
+
 for_window [class="^Volwheel$"] floating enable
 
-bindsym $mod+c exec google-chrome
+
+bindsym $mod+c exec chromium
 
 #put hangouts in workspace 7
 assign [class="^Google-chrome" instance="^crx_nckgahadagoaajjgafhacjanaoiihapd$"] 7
@@ -176,7 +181,7 @@ exec --no-startup-id i3-msg 'exec deluge-gtk'
 exec --no-startup-id i3-msg 'exec google-musicmanager'
 exec --no-startup-id i3-msg 'exec gnome-settings-daemon' #setup gnome (right font size etc)
 exec --no-startup-id i3-msg 'exec xautolock -time 20 -locker i3lock' #password lock screensaver
-exec --no-startup-id i3-msg 'exec dropbox start -i'
+exec --no-startup-id i3-msg 'exec dropboxd'
 
 #terminal replacement for tilde
 # start a terminal

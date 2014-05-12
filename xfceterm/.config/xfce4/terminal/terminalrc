@@ -20,4 +20,5 @@ BackgroundDarkness=0.750000
 FontName=Inconsolata Medium 14
 TabActivityTimeout=0
 TitleMode=TERMINAL_TITLE_REPLACE
+ScrollingBar=TERMINAL_SCROLLBAR_NONE
 
