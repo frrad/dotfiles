@@ -151,25 +151,26 @@ bar {
 }
 
 
-
-#BEGIN MY CUSTOMIZATIONS
-
+#####################
+# MY CUSTOMIZATIONS #
+#####################
 
 #hide_edge_borders both
-for_window [class="^Google-chrome"] border 1pixel
-for_window [class="^Chromium$"] border 1pixel
-for_window [class="^Gnome-terminal"] border 1pixel
-for_window [class="^mplayer2$"] border 1pixel
-for_window [class="^Xfce4-terminal$"] border 1pixel
-for_window [class="MPlayer"] border 1pixel
-
-for_window [class="^Volwheel$"] floating enable
+for_window [class="^Google-chrome"]														border	1pixel
+for_window [class="^Chromium$"]															border	1pixel
+for_window [class="^Chromium$" instance="crx_nckgahadagoaajjgafhacjanaoiihapd$"]		border	normal
+for_window [class="^Gnome-terminal"]													border	1pixel
+for_window [class="^mplayer2$"]															border	1pixel
+for_window [class="MPlayer"]															border	1pixel
+for_window [class="^Xfce4-terminal$"]													border	1pixel
 
 
 bindsym $mod+c exec chromium
 
 #put hangouts in workspace 7
 assign [class="^Google-chrome" instance="^crx_nckgahadagoaajjgafhacjanaoiihapd$"] 7
+assign [class="^Chromium$" instance="crx_nckgahadagoaajjgafhacjanaoiihapd$"] 7
+
 
 #bind show/hide scratchpad to F1
 bindsym Help scratchpad show
