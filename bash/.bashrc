@@ -98,3 +98,15 @@ export LESSHISTFILE="-"
 
 export PATH="$PATH:/home/frederick/Projects/bin"
 export PATH="$PATH:/home/frederick/bin"
+export PATH=$PATH:/home/frederick/.lib/pyroscope/bin/
+
+
+
+#need 256 colors for rtorrent-pycon
+export TERM=xterm-256color
+
+#these mess with rtorrent
+stty stop undef
+stty start undef
+
+

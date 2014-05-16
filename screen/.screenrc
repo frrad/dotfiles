@@ -5,3 +5,5 @@ hardstatus alwayslastline "%{b kw}%H %{r}%1` %{w}| %{b}%C %{w}| %{b}%Y-%m-%d %{w
 defscrollback 5000
 
 vbell off
+
+term xterm-256color
