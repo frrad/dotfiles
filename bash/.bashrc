@@ -28,6 +28,17 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
+
+if ! which python2 &> /dev/null; then
+HOSTCOL=`python2.7 -c "
+import commands, hashlib
+colorTuples = zip( [0]*8 + [1]*8, range(30,39)*2 )
+hostname = commands.getoutput( 'hostname' )
+index = int(   hashlib.md5(hostname).hexdigest(), 16   ) % len(colorTuples)
+hostColor = r'%d;%dm' % colorTuples[index]
+print hostColor
+"`
+else
 HOSTCOL=`python2 -c "
 import commands, hashlib
 colorTuples = zip( [0]*8 + [1]*8, range(30,39)*2 )
@@ -36,6 +47,9 @@ index = int(   hashlib.md5(hostname).hexdigest(), 16   ) % len(colorTuples)
 hostColor = r'%d;%dm' % colorTuples[index]
 print hostColor
 "`
+fi
+
+
 
 HOSTCOL="\[\033[$HOSTCOL\]"
 NOCOL='\[\033[00m\]'
