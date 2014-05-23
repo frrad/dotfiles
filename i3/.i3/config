@@ -170,6 +170,7 @@ bindsym $mod+c exec chromium
 #put hangouts in workspace 7
 assign [class="^Google-chrome" instance="^crx_nckgahadagoaajjgafhacjanaoiihapd$"] 7
 assign [class="^Chromium$" instance="crx_nckgahadagoaajjgafhacjanaoiihapd$"] 7
+assign [class="^Pidgin"] 7
 
 
 #bind show/hide scratchpad to F1
@@ -178,17 +179,12 @@ bindsym F1 scratchpad show
 
 
 #startup applications
-exec --no-startup-id i3-msg 'exec deluge-gtk'
+#exec --no-startup-id i3-msg 'exec deluge-gtk'
+#exec --no-startup-id i3-msg 'exec gnome-settings-daemon' #setup gnome (right font size etc)
 exec --no-startup-id i3-msg 'exec google-musicmanager'
-exec --no-startup-id i3-msg 'exec gnome-settings-daemon' #setup gnome (right font size etc)
 exec --no-startup-id i3-msg 'exec xautolock -time 20 -locker i3lock' #password lock screensaver
 exec --no-startup-id i3-msg 'exec dropboxd'
-
-#terminal replacement for tilde
-# start a terminal
-#exec --no-startup-id gnome-terminal
-# move to scratchpad
-#for_window [class="^Gnome-terminal"] move scratchpad
+exec --no-startup-id i3-msg 'exec pidgin'
 
 force_xinerama yes
 

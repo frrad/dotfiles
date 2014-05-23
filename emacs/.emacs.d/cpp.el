@@ -3,4 +3,4 @@
            (lambda ()
 			      (unless (file-exists-p "Makefile")
 					       (set (make-local-variable 'compile-command)
-								(concat "g++ " buffer-file-name)))))
+								(concat "g++ -pedantic " buffer-file-name)))))
