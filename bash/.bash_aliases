@@ -36,3 +36,4 @@ alias godoc="godoc -http=:41115 & echo launched godocs on port 41115"
 
 alias px='ps aux | grep -i'
 alias rtorrent="screen -x rtorrent"
+alias cmus="screen -x cmus &> /dev/null || screen -S cmus cmus"

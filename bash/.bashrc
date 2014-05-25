@@ -61,14 +61,7 @@ PS1="${debian_chroot:+($debian_chroot)}$GREEN\u$NOCOL@$HOSTCOL\h$NOCOL:$BLUE\w"'
 
 unset HOSTCOL NOCOL GREEN BLUE RED
 
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
-*)
-    ;;
-esac
+
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then

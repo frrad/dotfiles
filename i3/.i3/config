@@ -185,6 +185,7 @@ exec --no-startup-id i3-msg 'exec google-musicmanager'
 exec --no-startup-id i3-msg 'exec xautolock -time 20 -locker i3lock' #password lock screensaver
 exec --no-startup-id i3-msg 'exec dropboxd'
 exec --no-startup-id i3-msg 'exec pidgin'
+exec --no-startup-id i3-msg 'exec keepassx'
 
 force_xinerama yes
 
