@@ -95,7 +95,6 @@ if [[ $( tty ) == /dev/tty? ]]; then
     setleds +num
 fi
 
-eval `keychain --eval --agents ssh --noask --quiet`
 
 export GOPATH="/home/frederick/Projects/"
 export PRINTER="HL2270DW"
@@ -117,3 +116,11 @@ stty stop undef
 stty start undef
 
 
+if [ -e "$HOME/.workrc" ]; then
+  source "$HOME/.workrc"
+fi
+
+
+if ! which autossh &> /dev/null; then
+  eval `keychain --eval --agents ssh --noask --quiet`
+fi
