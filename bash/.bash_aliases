@@ -38,3 +38,4 @@ alias px='ps aux | grep -i'
 
 alias cmus="screen -x cmus &> /dev/null || screen -S cmus cmus"
 alias rtorrent="screen -x rtorrent &> /dev/null || screen -S rtorrent /usr/bin/rtorrent -D"
+alias randpass='< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c32;echo;'
