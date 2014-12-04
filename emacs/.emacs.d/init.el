@@ -23,24 +23,24 @@
 
 (global-set-key (kbd "M-B") 'recompile)
 
-(require 'smex)
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;(require 'smex)
+;(global-set-key (kbd "M-x") 'smex)
+;(global-set-key (kbd "M-X") 'smex-major-mode-commands)
 ;; This is your old M-x.
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
-(setq smex-save-file "~/.emacs.d/.smex-items") ; smex data inside .emacs.d
+;(setq smex-save-file "~/.emacs.d/.smex-items") ; smex data inside .emacs.d
 
-(require 'rainbow-delimiters)
-(add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
+;(require 'rainbow-delimiters)
+;(add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 
-(require 'yasnippet)
-(yas-global-mode t)
+;(require 'yasnippet)
+;(yas-global-mode t)
 
-(require 'go-mode-load)
-(add-hook 'before-save-hook 'gofmt-before-save)
-(add-hook 'go-mode-hook 'flyspell-prog-mode)
-(add-hook 'go-mode-hook (lambda ()
-                          (local-set-key (kbd "M-.") 'godef-jump)))
+;(require 'go-mode-load)
+;(add-hook 'before-save-hook 'gofmt-before-save)
+;(add-hook 'go-mode-hook 'flyspell-prog-mode)
+;(add-hook 'go-mode-hook (lambda ()
+;                          (local-set-key (kbd "M-.") 'godef-jump)))
 
 (autoload 'octave-mode "octave-mod" nil t)
 (setq auto-mode-alist (cons '("\\.m$" . octave-mode) auto-mode-alist))
