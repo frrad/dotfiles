@@ -39,7 +39,7 @@
 (require 'yasnippet)
 (yas-global-mode t)
 
-(require 'go-mode-load)
+(require 'go-mode-autoloads)
 (add-hook 'before-save-hook 'gofmt-before-save)
 (add-hook 'go-mode-hook 'flyspell-prog-mode)
 (add-hook 'go-mode-hook (lambda ()
@@ -66,6 +66,10 @@
 (add-hook 'before-save-hook 'clang-before-save)
 
 
+;;py-autopep8
+(add-to-list 'load-path "/your/path/")
+(require 'py-autopep8)
+(add-hook 'before-save-hook 'py-autopep8-before-save)
 
 
 ;;rcirc-mode
