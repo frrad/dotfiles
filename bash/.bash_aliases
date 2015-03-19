@@ -31,7 +31,6 @@ function cutpdf() {
 #short for rsync resume... get it?
 alias rsoom='rsync --partial --progress --rsh=ssh'
 
-alias dekeith="sed  -e 's/\r/ /' -e 's/system(\"PAUSE\")/cin.get()/' <"
 alias godoc="godoc -http=:41115 & echo launched godocs on port 41115"
 
 alias px='ps aux | grep -i'
@@ -41,3 +40,5 @@ alias rtorrent="screen -x rtorrent &> /dev/null || screen -S rtorrent /usr/bin/r
 alias randpass='< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c32;echo;'
 
 alias bc='bc -l'
+
+
