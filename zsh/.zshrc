@@ -21,3 +21,9 @@ bindkey -e
 if [ -e "$HOME/.workrc" ]; then
   source "$HOME/.workrc"
 fi
+
+autoload -U colors && colors
+PS1="%{$fg[red]%}%n%{$reset_color%}@%{$fg[blue]%}%m %{$fg[yellow]%}%~ %{$reset_color%}%% "
+
+alias grep='grep --color=always'
+alias ls='ls --color=always'
