@@ -28,3 +28,4 @@ PS1="%{$fg[red]%}%n%{$reset_color%}@%{$fg[blue]%}%m %{$fg[yellow]%}%~ %{$reset_c
 alias grep='grep --color=auto'
 alias ls='ls --color=auto'
 alias less='less -R'
+alias emacs="emacsclient -nw -a \"\" -c"
