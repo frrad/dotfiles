@@ -32,6 +32,7 @@ alias less='less -R'
 alias emacs="emacsclient -nw -a \"\" -c"
 
 export EDITOR="emacsclient -nw -a \"\" -c"
+export PATH=$PATH:$HOME/bin
 
 autoload -U select-word-style
 select-word-style bash
