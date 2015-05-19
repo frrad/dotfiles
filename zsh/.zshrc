@@ -39,6 +39,6 @@ export PATH=$PATH:$HOME/bin
 autoload -U select-word-style
 select-word-style bash
 
-if ! which autossh &> /dev/null; then
-	eval `keychain --eval --agents ssh --noask --quiet`
+if [ -e "/usr/bin/zsh" ]; then
+    eval `keychain --eval --agents ssh --noask --quiet`
 fi
