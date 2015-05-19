@@ -31,7 +31,7 @@ alias ll='ls -lah --color=auto'
 alias less='less -R'
 alias emacs="emacsclient -nw -a \"\" -c"
 alias xclip='xclip -selection c'
-
+alias recent='ls -t | head'
 
 export EDITOR="emacsclient -nw -a \"\" -c"
 export PATH=$PATH:$HOME/bin
