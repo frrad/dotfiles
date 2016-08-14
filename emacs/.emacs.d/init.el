@@ -26,12 +26,13 @@
 
 (global-set-key (kbd "M-B") 'recompile)
 
-(require 'smex)
+
 (global-set-key (kbd "M-x") 'smex)
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-;; This is your old M-x.
+; This is your old M-x.
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
-(setq smex-save-file "~/.emacs.d/.smex-items") ; smex data inside .emacs.d
+; smex data inside .emacs.d
+(setq smex-save-file "~/.emacs.d/.smex-items") 
 
 (require 'rainbow-delimiters)
 (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
@@ -67,10 +68,8 @@
 
 
 ;;py-autopep8
-(add-to-list 'load-path "/your/path/")
 (require 'py-autopep8)
-(add-hook 'before-save-hook 'py-autopep8-before-save)
-
+(add-hook 'python-mode-hook 'py-autopep8-enable-on-save)
 
 ;;rcirc-mode
 (add-hook 'rcirc-mode-hook (lambda () (set (make-local-variable 'scroll-conservatively) 8192)))
