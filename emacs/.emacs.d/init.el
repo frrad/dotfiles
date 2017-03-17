@@ -34,9 +34,6 @@
 ; smex data inside .emacs.d
 (setq smex-save-file "~/.emacs.d/.smex-items") 
 
-(require 'rainbow-delimiters)
-(add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
-
 (require 'yasnippet)
 (yas-global-mode t)
 
@@ -44,7 +41,7 @@
 (add-hook 'before-save-hook 'gofmt-before-save)
 (add-hook 'go-mode-hook 'flyspell-prog-mode)
 (add-hook 'go-mode-hook (lambda ()
-                          (local-set-key (kbd "M-.") 'godef-jump)))
+						  (local-set-key (kbd "M-.") 'godef-jump)))
 
 (autoload 'octave-mode "octave-mod" nil t)
 (setq auto-mode-alist (cons '("\\.m$" . octave-mode) auto-mode-alist))
@@ -148,6 +145,7 @@ If FILE already exists, signal an error."
 (setq inhibit-startup-screen t)    ; Skip emacs splash screen
 (put 'upcase-region 'disabled nil) ; Turn on upcase-region
 (put 'downcase-region 'disabled nil)
+(require 'ido)
 (ido-mode t)                       ; ido-mode!
 (setq-default fill-column 80)     ; Default fill width 70 is too small
 (setenv "PAGER" "/bin/cat")        ; so man works in terminal  

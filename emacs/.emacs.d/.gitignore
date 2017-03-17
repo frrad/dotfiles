@@ -1,3 +1,6 @@
 saves
 auto-save-list
 .smex-items
+*.elc
+elpa/*
+.ido.last
