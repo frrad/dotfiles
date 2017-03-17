@@ -1,9 +1,31 @@
-; Frederick Robinson
-; 5 December 2013
+;;  ____   _    ____ _  __    _    ____ _____ ____
+;; |  _ \ / \  / ___| |/ /   / \  / ___| ____/ ___|
+;; | |_) / _ \| |   | ' /   / _ \| |  _|  _| \___ \
+;; |  __/ ___ \ |___| . \  / ___ \ |_| | |___ ___) |
+;; |_| /_/   \_\____|_|\_\/_/   \_\____|_____|____/
 
-; Add some sources for ELPA
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("melpa" . "http://melpa.org/packages/")))
+; list the packages you want
+(setq package-list '(smex py-autopep8))
+
+; list the repositories containing them
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                         ("gnu" . "http://elpa.gnu.org/packages/")
+                         ("marmalade" . "http://marmalade-repo.org/packages/")))
+
+; activate all the packages (in particular autoloads)
+(package-initialize)
+
+; fetch the list of packages available
+(unless package-archive-contents
+  (package-refresh-contents))
+
+; install the missing packages
+(dolist (package package-list)
+  (unless (package-installed-p package)
+	    (package-install package)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
 
 ;Load path to include subdirectories of .emacs.d
 (let ((default-directory "~/.emacs.d/")) 
@@ -24,9 +46,9 @@
 ;C++ Mode modifications
 (load "~/.emacs.d/cpp.el")
 
+
+
 (global-set-key (kbd "M-B") 'recompile)
-
-
 (global-set-key (kbd "M-x") 'smex)
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
 ; This is your old M-x.
@@ -42,15 +64,6 @@
 (add-hook 'go-mode-hook 'flyspell-prog-mode)
 (add-hook 'go-mode-hook (lambda ()
 						  (local-set-key (kbd "M-.") 'godef-jump)))
-
-(autoload 'octave-mode "octave-mod" nil t)
-(setq auto-mode-alist (cons '("\\.m$" . octave-mode) auto-mode-alist))
-(add-hook 'octave-mode-hook
-          (lambda ()
-            (abbrev-mode 1)
-            (auto-fill-mode 1)
-            (if (eq window-system 'x)
-                (font-lock-mode 1))))
 
 
 ;;CLANG
