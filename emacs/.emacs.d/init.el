@@ -5,7 +5,9 @@
 ;; |_| /_/   \_\____|_|\_\/_/   \_\____|_____|____/
 
 ; list the packages you want
-(setq package-list '(smex py-autopep8))
+(setq package-list '(smex
+					 py-autopep8
+					 go-mode))
 
 ; list the repositories containing them
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
@@ -43,8 +45,6 @@
 (load custom-file)
 ;LaTeX / AUCTeX / TeX related settings
 (load "~/.emacs.d/tex.el")
-;C++ Mode modifications
-(load "~/.emacs.d/cpp.el")
 
 
 
@@ -56,26 +56,12 @@
 ; smex data inside .emacs.d
 (setq smex-save-file "~/.emacs.d/.smex-items") 
 
-(require 'yasnippet)
-(yas-global-mode t)
 
-(require 'go-mode-autoloads)
+
 (add-hook 'before-save-hook 'gofmt-before-save)
 (add-hook 'go-mode-hook 'flyspell-prog-mode)
 (add-hook 'go-mode-hook (lambda ()
 						  (local-set-key (kbd "M-.") 'godef-jump)))
-
-
-;;CLANG
-(load "clang-format")
-
-(defun clang-before-save () 
-  (interactive) 
-  (when 
-	  (eq major-mode 'c++-mode) (clang-format-buffer)))
-
-(add-hook 'before-save-hook 'clang-before-save)
-
 
 ;;py-autopep8
 (require 'py-autopep8)
@@ -99,29 +85,6 @@
 
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
-
-(defun copy-line (arg)
-  "Copy lines (as many as prefix argument) in the kill ring.
-   Ease of use features:
-    - Move to start of next line.
-    - Appends the copy on sequential calls.
-    - Use newline as last char even on the last line of the buffer.
-    - If region is active, copy its lines."
-  (interactive "p")
-  (let ((beg (line-beginning-position))
-		(end (line-end-position arg)))
-	(when mark-active
-	  (if (> (point) (mark))
-		  (setq beg (save-excursion (goto-char (mark)) (line-beginning-position)))
-		(setq end (save-excursion (goto-char (mark)) (line-end-position)))))
-	(if (eq last-command 'copy-line)
-		(kill-append (buffer-substring beg end) (< end beg))
-	  (kill-ring-save beg end)))
-  (kill-append "\n" nil)
-  (beginning-of-line (or (and arg (1+ arg)) 2))
-  (if (and arg (not (= 1 arg))) (message "%d lines copied" arg)))
-
-(global-set-key (kbd "M-k") 'copy-line)
 
 
 (setq snake-score-file "~/.emacs.d/snake-scores")
@@ -190,3 +153,39 @@ If FILE already exists, signal an error."
 )
 
 (put 'erase-buffer 'disabled nil)
+
+(random t) ; seed random number
+(defun insert-random-number (*n)
+  "Insert *n random digits.
+*n default to 5.
+Call `universal-argument' before for different count.
+URL `http://ergoemacs.org/emacs/elisp_insert_random_number_string.html'
+Version 2016-01-12"
+  (interactive "P")
+  (let ((-charset "1234567890" )
+        (-baseCount 10))
+    (dotimes (-i (if (numberp *n) (abs *n) 5 ))
+      (insert (elt -charset (random -baseCount))))))
+
+
+(defun copy-line (arg)
+  "Copy lines (as many as prefix argument) in the kill ring.
+   Ease of use features:
+    - Move to start of next line.
+    - Appends the copy on sequential calls.
+    - Use newline as last char even on the last line of the buffer.
+    - If region is active, copy its lines."
+  (interactive "p")
+  (let ((beg (line-beginning-position))
+    (end (line-end-position arg)))
+  (when mark-active
+    (if (> (point) (mark))
+      (setq beg (save-excursion (goto-char (mark)) (line-beginning-position)))
+    (setq end (save-excursion (goto-char (mark)) (line-end-position)))))
+  (if (eq last-command 'copy-line)
+    (kill-append (buffer-substring beg end) (< end beg))
+    (kill-ring-save beg end)))
+  (kill-append "\n" nil)
+  (beginning-of-line (or (and arg (1+ arg)) 2))
+  (if (and arg (not (= 1 arg))) (message "%d lines copied" arg)))
+(global-set-key (kbd "M-k") 'copy-line)
