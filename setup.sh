@@ -33,12 +33,15 @@ if [ ! -e "$HOME/dotfiles" ]; then
     eval `ssh-agent -s`
     ssh-add
     git clone git@github.com:frrad/dotfiles.git
+
+	stow git --dir=$HOME/dotfiles --target=$HOME
 fi
 
 if ! which emacs &> /dev/null; then
 	echo "Can't find emacs. Installing."
 	sudo apt-get install emacs-nox
 	echo "Installing dotfiles."
+	rm -rf ~/.emacs.d
 	stow emacs --dir=$HOME/dotfiles --target=$HOME
 fi
 
