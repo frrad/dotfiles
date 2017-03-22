@@ -45,4 +45,13 @@ if ! which emacs &> /dev/null; then
 	stow emacs --dir=$HOME/dotfiles --target=$HOME
 fi
 
-sudo apt-get install openssh-server tree apt-file
+if ! which zsh &> /dev/null; then
+	echo "Can't find zsh. Installing."
+	echo "Installing dotfiles."
+	stow zsh --dir=$HOME/dotfiles --target=$HOME
+	sudo apt-get install zsh
+	chsh -s `which zsh`
+fi
+
+
+sudo apt-get install openssh-server tree apt-file keychain
