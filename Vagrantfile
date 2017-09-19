@@ -1,6 +1,6 @@
 Vagrant.configure("2") do |config|
   config.ssh.forward_agent = true
-  config.vm.synced_folder '.', '/home/vagrant/devbox'
+  config.vm.synced_folder '.', '/home/vagrant/dotfiles'
 
   config.vm.hostname = "devbox"
 
