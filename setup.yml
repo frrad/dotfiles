@@ -1,4 +1,4 @@
-- hosts: all
+>- hosts: all
 
   tasks:
   - name: install packages
@@ -26,5 +26,7 @@
   - name: Stow configurations
     command: chdir={{ ansible_env.HOME }}/dotfiles stow {{item}}
     with_items:
-    - zsh
     - emacs
+    - ispell
+    - screen
+    - zsh
