@@ -10,6 +10,7 @@
     - git
     - aptitude
     - zsh
+    - stow
 
   - name: upgrade packages
     sudo: true
