@@ -1,0 +1,29 @@
+- hosts: all
+
+  tasks:
+  - name: install packages
+    sudo: true
+    apt: name={{item}} state=latest update_cache=yes
+    with_items:
+    - emacs-nox
+    - ansible
+    - git
+    - aptitude
+    - zsh
+
+  - name: upgrade packages
+    sudo: true
+    apt:
+      upgrade: yes
+      update_cache: yes
+
+ 
+  - name: Change default shell to zsh
+    sudo: true
+    user: shell='/usr/bin/zsh' name={{ ansible_user_id }}
+
+  - name: Stow configurations
+    command: chdir={{ ansible_env.HOME }}/dotfiles stow {{item}}
+    with_items:
+    - zsh
+    - emacs
