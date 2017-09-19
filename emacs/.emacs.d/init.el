@@ -7,7 +7,8 @@
 ; list the packages you want
 (setq package-list '(smex
 					 py-autopep8
-					 go-mode))
+					 go-mode
+					 haskell-mode))
 
 ; list the repositories containing them
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
