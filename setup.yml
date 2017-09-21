@@ -11,6 +11,7 @@
     - aptitude
     - zsh
     - stow
+    - apt-file
 
   - name: upgrade packages
     sudo: true
