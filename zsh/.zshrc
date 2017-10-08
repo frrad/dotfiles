@@ -28,3 +28,4 @@ select-word-style bash
 
 eval `keychain --eval --agents ssh --noask --quiet`
 
+export GOPATH=$HOME/go
