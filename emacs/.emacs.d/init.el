@@ -13,7 +13,7 @@
 ; list the repositories containing them
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
                          ("gnu" . "http://elpa.gnu.org/packages/")
-                         ("marmalade" . "http://marmalade-repo.org/packages/")))
+                         ("marmalade" . "https://marmalade-repo.org/packages/")))
 
 ; activate all the packages (in particular autoloads)
 (package-initialize)

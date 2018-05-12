@@ -19,9 +19,8 @@ alias less='less -R'
 alias emacs="emacsclient -nw -a \"\" -c"
 alias xclip='xclip -selection c'
 alias recent='ls -t | head'
-
 export EDITOR="emacsclient -nw -a \"\" -c"
-export PATH=$PATH:$HOME/bin
+
 
 autoload -U select-word-style
 select-word-style bash
@@ -29,3 +28,4 @@ select-word-style bash
 eval `keychain --eval --agents ssh --noask --quiet`
 
 export GOPATH=$HOME/go
+export PATH=$PATH:$HOME/go/bin
