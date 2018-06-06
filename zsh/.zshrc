@@ -4,9 +4,6 @@ SAVEHIST=100000
 setopt appendhistory INC_APPEND_HISTORY autocd beep extendedglob nomatch notify SHARE_HISTORY
 bindkey -e
 
-if [ -e "$HOME/.workrc" ]; then
-  source "$HOME/.workrc"
-fi
 
 autoload -U colors && colors
 PS1="%{$fg[red]%}%n%{$reset_color%}@%{$fg[blue]%}%m %{$fg[yellow]%}%~ %{$reset_color%}%% "
@@ -27,5 +24,11 @@ select-word-style bash
 
 eval `keychain --eval --agents ssh --noask --quiet`
 
+
 export GOPATH=$HOME/go
 export PATH=$PATH:$HOME/go/bin
+
+if [ -e "$HOME/.workrc" ]; then
+  source "$HOME/.workrc"
+fi
+

@@ -1,37 +1,44 @@
+;;; package --- Summary
+;;; Commentary:
+
+;;; Code:
+
 ;;  ____   _    ____ _  __    _    ____ _____ ____
 ;; |  _ \ / \  / ___| |/ /   / \  / ___| ____/ ___|
 ;; | |_) / _ \| |   | ' /   / _ \| |  _|  _| \___ \
 ;; |  __/ ___ \ |___| . \  / ___ \ |_| | |___ ___) |
 ;; |_| /_/   \_\____|_|\_\/_/   \_\____|_____|____/
 
-; list the packages you want
-(setq package-list '(smex
-					 py-autopep8
-					 go-mode))
-
-; list the repositories containing them
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ("gnu" . "http://elpa.gnu.org/packages/")
-                         ("marmalade" . "https://marmalade-repo.org/packages/")))
-
-; activate all the packages (in particular autoloads)
+(require 'package)
+(setq package-enable-at-startup nil)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
 (package-initialize)
 
-; fetch the list of packages available
-(unless package-archive-contents
-  (package-refresh-contents))
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
-; install the missing packages
-(dolist (package package-list)
-  (unless (package-installed-p package)
-	    (package-install package)))
+(eval-when-compile
+  (require 'use-package))
+
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
+
+(use-package go-mode
+  :ensure t
+  :mode "\\.go$")
+
+(use-package smex
+  :ensure t)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-
 ;Load path to include subdirectories of .emacs.d
 (let ((default-directory "~/.emacs.d/")) 
   (normal-top-level-add-subdirs-to-load-path))
+
 ;also add subdirectories of site-lisp
 (let ((default-directory "/usr/share/emacs/site-lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
@@ -64,8 +71,8 @@
 						  (local-set-key (kbd "M-.") 'godef-jump)))
 
 ;;py-autopep8
-(require 'py-autopep8)
-(add-hook 'python-mode-hook 'py-autopep8-enable-on-save)
+;; (require 'py-autopep8)
+;; (add-hook 'python-mode-hook 'py-autopep8-enable-on-save)
 
 ;;rcirc-mode
 (add-hook 'rcirc-mode-hook (lambda () (set (make-local-variable 'scroll-conservatively) 8192)))
@@ -189,3 +196,5 @@ Version 2016-01-12"
   (beginning-of-line (or (and arg (1+ arg)) 2))
   (if (and arg (not (= 1 arg))) (message "%d lines copied" arg)))
 (global-set-key (kbd "M-k") 'copy-line)
+(provide 'init)
+;;; init.el ends here

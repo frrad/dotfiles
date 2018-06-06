@@ -5,20 +5,23 @@
     sudo: true
     apt: name={{item}} state=latest update_cache=yes
     with_items:
-    - emacs-nox
     - ansible
-    - git
-    - aptitude
-    - zsh
-    - stow
     - apt-file
+    - aptitude
+    - emacs-nox
+    - git
+    - golang-go
+    - python-pip
+    - python3-pip
+    - stow
+    - vagrant
+    - zsh
 
   - name: upgrade packages
     sudo: true
     apt:
       upgrade: yes
       update_cache: yes
-
  
   - name: Change default shell to zsh
     sudo: true
@@ -31,3 +34,31 @@
     - ispell
     - screen
     - zsh
+
+  - local_action: stat path=../workfiles/file.yml
+    register: optional_file
+    become: no
+
+  - name: Add Virtualbox Apt signing key
+    sudo: true
+    apt_key:
+      url: https://www.virtualbox.org/download/oracle_vbox_2016.asc
+      state: present
+
+  - name: Install Virtualbox repo
+    sudo: true
+    apt_repository:
+      repo: deb http://download.virtualbox.org/virtualbox/debian stretch contrib
+      state: present
+      update_cache: yes
+
+  - name: Install Virtualbox
+    sudo: true
+    apt:
+      name: virtualbox-5.1
+      state: latest
+      update_cache: yes
+
+
+  - include: ../workfiles/file.yml
+    when: optional_file.stat.exists
