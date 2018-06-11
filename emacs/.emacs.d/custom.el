@@ -5,7 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(ido-save-directory-list-file "~/.emacs.d/.ido.last")
  '(org-startup-indented t)
- '(package-selected-packages (quote (company-go py-autopep8 smex)))
+ '(package-selected-packages (quote (magit company-go py-autopep8 smex)))
  '(rcirc-default-nick "frrad")
  '(rcirc-server-alist (quote (("home.frrad.com" :nick "Frederick" nil nil))))
  '(sql-port 5439)

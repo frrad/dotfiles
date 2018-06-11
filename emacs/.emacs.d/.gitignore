@@ -5,3 +5,4 @@ smex-items
 *.elc
 elpa/*
 .ido.last
+eshell/
