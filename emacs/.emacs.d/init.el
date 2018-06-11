@@ -9,6 +9,10 @@
 ;; |  __/ ___ \ |___| . \  / ___ \ |_| | |___ ___) |
 ;; |_| /_/   \_\____|_|\_\/_/   \_\____|_____|____/
 
+
+
+;; Loads use-package which is then used to load and configure all other packages
+;; https://github.com/CachesToCaches/getting_started_with_use_package/blob/master/init-use-package.el
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
@@ -22,12 +26,18 @@
 (eval-when-compile
   (require 'use-package))
 
+;; Now all the rest of my packages
 (use-package magit
   :ensure t)
 
 (use-package flycheck
   :ensure t
   :init (global-flycheck-mode))
+
+(use-package company
+  :commands company-mode
+  :init
+  (add-hook 'after-init-hook 'global-company-mode))
 
 (use-package go-mode
   :ensure t
