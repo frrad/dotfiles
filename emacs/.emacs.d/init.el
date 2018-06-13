@@ -25,6 +25,7 @@
 
 (eval-when-compile
   (require 'use-package))
+(require 'bind-key)
 
 ;; Now all the rest of my packages
 (use-package magit
@@ -41,7 +42,9 @@
 
 (use-package go-mode
   :ensure t
-  :mode "\\.go$")
+  :mode "\\.go$"
+  :custom
+  (gofmt-args (list "-s") "simplify on gofmt"))
 
 (use-package smex
   :ensure t
