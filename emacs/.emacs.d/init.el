@@ -43,6 +43,8 @@
 (use-package go-mode
   :ensure t
   :mode "\\.go$"
+  :config
+  (add-hook 'before-save-hook 'gofmt-before-save)
   :custom
   (gofmt-args (list "-s") "simplify on gofmt"))
 
@@ -75,7 +77,6 @@
 (global-set-key (kbd "M-B") 'recompile)
 
 
-(add-hook 'before-save-hook 'gofmt-before-save)
 (add-hook 'go-mode-hook 'flyspell-prog-mode)
 (add-hook 'go-mode-hook (lambda ()
 						  (local-set-key (kbd "M-.") 'godef-jump)))
