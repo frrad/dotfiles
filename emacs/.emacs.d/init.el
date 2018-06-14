@@ -3,13 +3,14 @@
 
 ;;; Code:
 
+;; First recompile directory so if init.el has been changed we'll pick up the changes on the first start
+(byte-recompile-directory (expand-file-name "~/.emacs.d") 0)
+
 ;;  ____   _    ____ _  __    _    ____ _____ ____
 ;; |  _ \ / \  / ___| |/ /   / \  / ___| ____/ ___|
 ;; | |_) / _ \| |   | ' /   / _ \| |  _|  _| \___ \
 ;; |  __/ ___ \ |___| . \  / ___ \ |_| | |___ ___) |
 ;; |_| /_/   \_\____|_|\_\/_/   \_\____|_____|____/
-
-
 
 ;; Loads use-package which is then used to load and configure all other packages
 ;; https://github.com/CachesToCaches/getting_started_with_use_package/blob/master/init-use-package.el
@@ -36,9 +37,8 @@
   :init (global-flycheck-mode))
 
 (use-package company
-  :commands company-mode
-  :init
-  (add-hook 'after-init-hook 'global-company-mode))
+  :ensure t
+  :hook ((go-mode python-mode) . company-mode))
 
 (use-package go-mode
   :ensure t
@@ -70,8 +70,6 @@
 (let ((default-directory "/usr/share/emacs/site-lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
 
-(byte-recompile-directory (expand-file-name "~/.emacs.d") 0)
-
 
 ;;LOAD OTHER FILES
 ;Customize generated settings
@@ -83,11 +81,9 @@
 
 (global-set-key (kbd "M-B") 'recompile)
 
-
 (add-hook 'go-mode-hook 'flyspell-prog-mode)
 (add-hook 'go-mode-hook (lambda ()
 						  (local-set-key (kbd "M-.") 'godef-jump)))
-
 
 ;;rcirc-mode
 (add-hook 'rcirc-mode-hook (lambda () (set (make-local-variable 'scroll-conservatively) 8192)))
