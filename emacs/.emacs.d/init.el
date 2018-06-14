@@ -3,9 +3,6 @@
 
 ;;; Code:
 
-;; First recompile directory so if init.el has been changed we'll pick up the changes on the first start
-(byte-recompile-directory (expand-file-name "~/.emacs.d") 0)
-
 ;;  ____   _    ____ _  __    _    ____ _____ ____
 ;; |  _ \ / \  / ___| |/ /   / \  / ___| ____/ ___|
 ;; | |_) / _ \| |   | ' /   / _ \| |  _|  _| \___ \
@@ -38,7 +35,10 @@
 
 (use-package company
   :ensure t
-  :hook ((go-mode python-mode) . company-mode))
+  :hook ((go-mode python-mode) . company-mode)
+  :custom
+  (company-idle-delay 0.05 "react faster")
+)
 
 (use-package go-mode
   :ensure t
