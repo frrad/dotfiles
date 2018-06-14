@@ -38,6 +38,7 @@
   :hook ((go-mode python-mode) . company-mode)
   :custom
   (company-idle-delay 0.05 "react faster")
+  (company-minimum-prefix-length 2 "react sooner")
 )
 
 (use-package go-mode
