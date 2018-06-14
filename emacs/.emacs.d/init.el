@@ -54,6 +54,13 @@
   :custom
   (smex-save-file "~/.emacs.d/.smex-items" "Put smex cache in ~/.emacs.d"))
 
+(use-package py-autopep8
+  :commands
+  py-autopep8
+  :init
+  (add-hook 'python-mode-hook 'py-autopep8-enable-on-save))
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;Load path to include subdirectories of .emacs.d
 (let ((default-directory "~/.emacs.d/"))
@@ -81,9 +88,6 @@
 (add-hook 'go-mode-hook (lambda ()
 						  (local-set-key (kbd "M-.") 'godef-jump)))
 
-;;py-autopep8
-;; (require 'py-autopep8)
-;; (add-hook 'python-mode-hook 'py-autopep8-enable-on-save)
 
 ;;rcirc-mode
 (add-hook 'rcirc-mode-hook (lambda () (set (make-local-variable 'scroll-conservatively) 8192)))
@@ -108,19 +112,16 @@
 (setq snake-score-file "~/.emacs.d/snake-scores")
 (setq tetris-score-file "~/.emacs.d/tetris-scores")
 
-
-
-
 ;;GENERAL CUSTOMIZATIONS
 (setq inhibit-startup-screen t)    ; Skip emacs splash screen
 (put 'upcase-region 'disabled nil) ; Turn on upcase-region
 (put 'downcase-region 'disabled nil)
 (require 'ido)
 (ido-mode t)                       ; ido-mode!
-(setq-default fill-column 80)     ; Default fill width 70 is too small
-(setenv "PAGER" "/bin/cat")        ; so man works in terminal  
+(setq-default fill-column 80)      ; Default fill width 70 is too small
+(setenv "PAGER" "/bin/cat")        ; so man works in terminal
 ;Turn off menu-bar but only if in a terminal
-(if (not window-system) (menu-bar-mode -1)) 
+(if (not window-system) (menu-bar-mode -1))
 
 (define-key help-map "a" 'apropos) ;slightly more results than default
 
@@ -149,26 +150,25 @@
 (put 'erase-buffer 'disabled nil)
 
 (random t) ; seed random number
-(defun insert-random-number (*n)
-  "Insert *n random digits.
+(defun insert-random-number (*N)
+  "Insert *N random digits.
 *n default to 5.
-Call `universal-argument' before for different count.
-URL `http://ergoemacs.org/emacs/elisp_insert_random_number_string.html'
-Version 2016-01-12"
+  Call `universal-argument' before for different count.
+  URL `http://ergoemacs.org/emacs/elisp_insert_random_number_string.html'"
   (interactive "P")
   (let ((-charset "1234567890" )
         (-baseCount 10))
-    (dotimes (-i (if (numberp *n) (abs *n) 5 ))
+    (dotimes (-i (if (numberp *N) (abs *N) 5 ))
       (insert (elt -charset (random -baseCount))))))
 
 
 (defun copy-line (arg)
-  "Copy lines (as many as prefix argument) in the kill ring.
-   Ease of use features:
-    - Move to start of next line.
-    - Appends the copy on sequential calls.
-    - Use newline as last char even on the last line of the buffer.
-    - If region is active, copy its lines."
+  "Copy lines (as many as prefix argument) in the kill ring ARG.
+Ease of use features:
+  - Move to start of next line.
+  - Appends the copy on sequential calls.
+  - Use newline as last char even on the last line of the buffer.
+  - If region is active, copy its lines."
   (interactive "p")
   (let ((beg (line-beginning-position))
     (end (line-end-position arg)))
