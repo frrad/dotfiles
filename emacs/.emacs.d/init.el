@@ -119,8 +119,9 @@
 (setenv "PAGER" "/bin/cat")        ; so man works in terminal
 ;Turn off menu-bar but only if in a terminal
 (if (not window-system) (menu-bar-mode -1))
-
 (define-key help-map "a" 'apropos) ;slightly more results than default
+(electric-pair-mode 1)
+
 
 ;;BACKUP FILE SETTINGS
 (defvar --bu-directory (concat user-emacs-directory "saves"))
