@@ -43,6 +43,7 @@
 
 (use-package go-mode
   :ensure t
+  :bind ("M-." . godef-jump)
   :mode "\\.go$"
   :config
   (add-hook 'before-save-hook 'gofmt-before-save)
@@ -83,8 +84,6 @@
 (global-set-key (kbd "M-B") 'recompile)
 
 (add-hook 'go-mode-hook 'flyspell-prog-mode)
-(add-hook 'go-mode-hook (lambda ()
-						  (local-set-key (kbd "M-.") 'godef-jump)))
 
 ;;rcirc-mode
 (add-hook 'rcirc-mode-hook (lambda () (set (make-local-variable 'scroll-conservatively) 8192)))
