@@ -62,6 +62,12 @@
   :init
   (add-hook 'python-mode-hook 'py-autopep8-enable-on-save))
 
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;Load path to include subdirectories of .emacs.d
@@ -90,32 +96,17 @@
 (add-hook 'rcirc-mode-hook (lambda () (flyspell-mode 1)))
 (global-set-key (kbd "C-x O") (lambda ()  (interactive) (other-window -1)))
 
-;;markdown-mode ($sudo apt-get install emacs-goodies-el)
-(autoload 'markdown-mode "markdown-mode"
-   "Major mode for editing Markdown files" t)
-
-(add-hook 'markdown-mode-hook
-            (lambda ()
-              (when buffer-file-name
-                (add-hook 'after-save-hook
-                          'check-parens
-                          nil t))))
-
-(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
-
-
-
 (setq snake-score-file "~/.emacs.d/snake-scores")
 (setq tetris-score-file "~/.emacs.d/tetris-scores")
 
 ;;GENERAL CUSTOMIZATIONS
-(setq inhibit-startup-screen t)    ; Skip emacs splash screen
-(put 'upcase-region 'disabled nil) ; Turn on upcase-region
+(setq inhibit-startup-screen t)      ; Skip emacs splash screen
+(put 'upcase-region 'disabled nil)   ; Turn on upcase-region
 (put 'downcase-region 'disabled nil)
 (require 'ido)
-(ido-mode t)                       ; ido-mode!
-(setq-default fill-column 80)      ; Default fill width 70 is too small
-(setenv "PAGER" "/bin/cat")        ; so man works in terminal
+(ido-mode t)                         ; ido-mode!
+(setq-default fill-column 80)        ; Default fill width 70 is too small
+(setenv "PAGER" "/bin/cat")          ; so man works in terminal
 ;Turn off menu-bar but only if in a terminal
 (if (not window-system) (menu-bar-mode -1))
 (define-key help-map "a" 'apropos) ;slightly more results than default
