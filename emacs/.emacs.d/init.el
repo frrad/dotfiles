@@ -120,8 +120,8 @@
 (setq
    make-backup-files t       ; backup of a file the first time it is saved
    backup-by-copying t       ; don't clobber symlinks
-   backup-directory-alist
-   `(("." . ,--bu-directory)); backup save path
+   backup-directory-alist    ; backup save path
+  `(("." . ,(concat user-emacs-directory "backups")))
    delete-old-versions t     ; delete excess backup files silently
    kept-new-versions 6
    kept-old-versions 2
