@@ -41,6 +41,10 @@
   (company-minimum-prefix-length 2 "react sooner")
 )
 
+(use-package go-guru
+  :hook ((go-mode) . go-guru-hl-identifier-mode)
+  :ensure t)
+
 (use-package go-mode
   :ensure t
   :bind ("M-." . godef-jump)
