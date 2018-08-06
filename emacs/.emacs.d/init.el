@@ -31,6 +31,8 @@
 
 (use-package flycheck
   :ensure t
+  :bind (("M-n" . flycheck-next-error)
+		 ("M-p" . flycheck-previous-error))
   :init (global-flycheck-mode))
 
 (use-package company
