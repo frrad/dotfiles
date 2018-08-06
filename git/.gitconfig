@@ -1,7 +1,8 @@
 [user]
-	email = frederick.robinson@gmail.com
 	name = Frederick Robinson
 [push]
 	default = simple
 [alias]
 	clone = clone --recursive
+[init]
+  templatedir = ~/.git-templates
