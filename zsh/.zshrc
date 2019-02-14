@@ -27,6 +27,7 @@ eval `keychain --eval --agents ssh --noask --quiet`
 
 export GOPATH=$HOME/go
 export PATH=$PATH:$HOME/go/bin
+export PATH=$PATH:$HOME/.local/bin
 
 if [ -e "$HOME/.workrc" ]; then
   source "$HOME/.workrc"
