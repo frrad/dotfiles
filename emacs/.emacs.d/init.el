@@ -26,6 +26,9 @@
 (require 'bind-key)
 
 ;; Now all the rest of my packages
+(use-package terraform-mode
+  :hook (terraform-mode . terraform-format-on-save-mode))
+
 (use-package magit
   :ensure t)
 
@@ -43,6 +46,9 @@
   (company-minimum-prefix-length 2 "react sooner")
 )
 
+(use-package godoctor
+  :ensure t)
+
 (use-package go-guru
   :hook ((go-mode) . go-guru-hl-identifier-mode)
   :ensure t)
@@ -54,7 +60,7 @@
   :config
   (add-hook 'before-save-hook 'gofmt-before-save)
   :custom
-  (gofmt-args (list "-s") "simplify on gofmt"))
+  (gofmt-args (list "-s" "-r=(a) -> a") "simplify on gofmt"))
 
 (use-package smex
   :ensure t
@@ -123,6 +129,8 @@
 (defvar --bu-directory (concat user-emacs-directory "saves"))
 (if (not (file-exists-p --bu-directory))
         (make-directory --bu-directory t))
+;(custom-set-variables
+;  '(auto-save-file-name-transforms '((".*" (concat user-emacs-directory "saves/\\1") t))))
 (setq
    make-backup-files t       ; backup of a file the first time it is saved
    backup-by-copying t       ; don't clobber symlinks
