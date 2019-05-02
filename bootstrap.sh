@@ -11,11 +11,11 @@ fi
 
 if ! [ -x "$(command -v puppet)" ]; then
   apt-get update
-  apt-get install -y puppet
+  apt-get install -y puppet r10k
 fi
 
 if [ ! -d "$target" ]; then
   su -c "git clone https://github.com/frrad/dotfiles.git $target" $SUDO_USER
 fi
 
-puppet apply --test $target/puppet/main.pp
+puppet apply --test $target/puppet/main.pp --modulepath=$target/puppet/modules

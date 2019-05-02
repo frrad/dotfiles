@@ -1,0 +1,2 @@
+mod 'dcoxall-golang', '1.2.0'
+mod 'puppetlabs-stdlib', '4.25.1'
