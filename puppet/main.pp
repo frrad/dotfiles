@@ -6,6 +6,18 @@ package { 'xstow':
   ensure => 'latest',
 }
 
+package { 'keychain':
+  ensure => 'latest',
+}
+
+package { 'colordiff':
+  ensure => 'latest',
+}
+
+package { 'tree':
+  ensure => 'latest',
+}
+
 package { 'kpcli':
   ensure => 'latest',
 }
