@@ -46,16 +46,20 @@
   (company-minimum-prefix-length 2 "react sooner")
 )
 
-(use-package godoctor
-  :ensure t)
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode
+  :defer t
+  :custom
+  (lsp-ui-sideline-enable nil)
+  (lsp-ui-doc-enable nil))
 
-(use-package go-guru
-  :hook ((go-mode) . go-guru-hl-identifier-mode)
-  :ensure t)
+(use-package lsp-mode
+  :hook (prog-mode . lsp)
+  :commands lsp)
 
 (use-package go-mode
   :ensure t
-  :bind ("M-." . godef-jump)
   :mode "\\.go$"
   :config
   (add-hook 'before-save-hook 'gofmt-before-save)
@@ -100,8 +104,6 @@
 
 
 (global-set-key (kbd "M-B") 'recompile)
-
-(add-hook 'go-mode-hook 'flyspell-prog-mode)
 
 ;;rcirc-mode
 (add-hook 'rcirc-mode-hook (lambda () (set (make-local-variable 'scroll-conservatively) 8192)))
