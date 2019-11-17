@@ -55,8 +55,13 @@
   (lsp-ui-doc-enable nil))
 
 (use-package lsp-mode
+  :ensure t
   :hook (prog-mode . lsp)
-  :commands lsp)
+  :commands lsp
+  :bind (("C-c r" . lsp-find-references))
+  :config
+  (setq lsp-before-save-edits t)
+  (setq lsp-enable-snippet nil))
 
 (use-package go-mode
   :ensure t
@@ -71,12 +76,6 @@
   :bind ("M-x" . smex)
   :custom
   (smex-save-file "~/.emacs.d/.smex-items" "Put smex cache in ~/.emacs.d"))
-
-(use-package py-autopep8
-  :commands
-  py-autopep8
-  :init
-  (add-hook 'python-mode-hook 'py-autopep8-enable-on-save))
 
 (use-package markdown-mode
   :ensure t
