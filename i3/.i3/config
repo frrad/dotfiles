@@ -151,26 +151,11 @@ bar {
 }
 
 
-#####################
-# MY CUSTOMIZATIONS #
-#####################
-
 #hide_edge_borders both
-for_window [class="^Google-chrome"]														border	1pixel
-for_window [class="^Chromium$"]															border	1pixel
-for_window [class="^Chromium$" instance="crx_nckgahadagoaajjgafhacjanaoiihapd$"]		border	normal
-for_window [class="^Gnome-terminal"]													border	1pixel
-for_window [class="^mplayer2$"]															border	1pixel
-for_window [class="MPlayer"]															border	1pixel
-for_window [class="^Xfce4-terminal$"]													border	1pixel
+for_window [class=".*"] border pixel 1
 
 
-bindsym $mod+c exec chromium
-
-#put hangouts in workspace 7
-assign [class="^Google-chrome" instance="^crx_nckgahadagoaajjgafhacjanaoiihapd$"] 7
-assign [class="^Chromium$" instance="crx_nckgahadagoaajjgafhacjanaoiihapd$"] 7
-assign [class="^Pidgin"] 7
+bindsym $mod+c exec chromium-browser
 
 
 #bind show/hide scratchpad to F1
@@ -179,13 +164,7 @@ bindsym F1 scratchpad show
 
 
 #startup applications
-#exec --no-startup-id i3-msg 'exec deluge-gtk'
-#exec --no-startup-id i3-msg 'exec gnome-settings-daemon' #setup gnome (right font size etc)
-exec --no-startup-id i3-msg 'exec google-musicmanager'
 exec --no-startup-id i3-msg 'exec xautolock -time 20 -locker i3lock' #password lock screensaver
-exec --no-startup-id i3-msg 'exec dropboxd'
-exec --no-startup-id i3-msg 'exec pidgin'
-exec --no-startup-id i3-msg 'exec keepassx'
 
 force_xinerama yes
 
