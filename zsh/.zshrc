@@ -10,8 +10,7 @@ PS1="%{$fg[red]%}%n%{$reset_color%}@%{$fg[blue]%}%m %{$fg[yellow]%}%~ %{$reset_c
 
 alias grep='grep --color=auto'
 alias diff='colordiff'
-alias ls='ls --color=auto'
-alias ll='ls -lah --color=auto'
+alias ll='ls -lah'
 alias less='less -R'
 alias emacs="emacsclient -nw -a \"\" -c"
 alias xclip='xclip -selection c'
