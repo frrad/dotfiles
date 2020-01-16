@@ -42,6 +42,7 @@
   :ensure t
   :hook ((go-mode python-mode) . company-mode)
   :custom
+  (company-dabbrev-downcase nil "don't downcase everything")
   (company-idle-delay 0.05 "react faster")
   (company-minimum-prefix-length 2 "react sooner")
 )
