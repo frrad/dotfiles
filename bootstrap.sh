@@ -20,4 +20,4 @@ fi
 
 cd ${target}/puppet
 r10k puppetfile install
-puppet apply --test $target/puppet/main.pp --modulepath=$target/puppet/modules
+puppet apply --test --verbose $target/puppet/main.pp --modulepath=$target/puppet/modules
