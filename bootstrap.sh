@@ -17,5 +17,7 @@ fi
 if [ ! -d "$target" ]; then
   su -c "git clone https://github.com/frrad/dotfiles.git $target" $SUDO_USER
 fi
+
+cd ${target}/puppet
 r10k puppetfile install
 puppet apply --test $target/puppet/main.pp --modulepath=$target/puppet/modules
