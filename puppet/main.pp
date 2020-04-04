@@ -1,4 +1,4 @@
-package { 'emacs25-nox':
+package { 'emacs-nox':
   ensure => 'latest',
 }
 
@@ -7,6 +7,10 @@ package { 'htop':
 }
 
 package { 'python3-pip':
+  ensure => 'latest',
+}
+
+package { 'ripgrep':
   ensure => 'latest',
 }
 
@@ -46,7 +50,7 @@ package { 'zsh':
   ensure => 'latest',
 }
 
-user { $id:
+user { $::sudo_user:
   ensure => present,
   shell  => "/bin/zsh",
 }
