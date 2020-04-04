@@ -1,3 +1,4 @@
 \#*\#
 setup.retry
 flycheck_init.el
+/puppet/modules/
