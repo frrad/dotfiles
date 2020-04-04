@@ -28,3 +28,11 @@ if [ -e "$HOME/.workrc" ]; then
   source "$HOME/.workrc"
 fi
 
+# What OS are we running?
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    source ".linux.zsh"
+elif [[ `uname` == "Darwin" ]]; then
+    source $HOME/.mac.zsh
+else
+    echo 'Unknown OS!'
+fi
