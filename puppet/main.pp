@@ -1,60 +1,24 @@
-package { 'emacs-nox':
-  ensure => 'latest',
-}
+$packages = [
+  'apt-file',
+  'binutils',
+  'colordiff',
+  'emacs-nox',
+  'htop',
+  'kpcli',
+  'make',
+  'python3-pip',
+  'ripgrep',
+  'tree',
+  'xstow',
+  'zsh',
+]
 
-package { 'htop':
-  ensure => 'latest',
-}
-
-package { 'python3-pip':
-  ensure => 'latest',
-}
-
-package { 'ripgrep':
-  ensure => 'latest',
-}
-
-package { 'binutils':
-  ensure => 'latest',
-}
-
-package { 'make':
-  ensure => 'latest',
-}
-
-package { 'apt-file':
-  ensure => 'latest',
-}
-
-package { 'xstow':
-  ensure => 'latest',
-}
-
-package { 'keychain':
-  ensure => 'latest',
-}
-
-package { 'colordiff':
-  ensure => 'latest',
-}
-
-package { 'tree':
-  ensure => 'latest',
-}
-
-package { 'kpcli':
-  ensure => 'latest',
-}
-
-package { 'zsh':
-  ensure => 'latest',
-}
+package { $packages: ensure => 'latest' }
 
 user { $::sudo_user:
   ensure => present,
   shell  => "/bin/zsh",
 }
-
 
 node  default{
 class { 'golang':
