@@ -1,8 +1,12 @@
-[user]
-	name = Frederick Robinson
 [push]
 	default = simple
 [alias]
 	clone = clone --recursive
 [init]
   templatedir = ~/.git-templates
+
+[includeIf "gitdir:~/Projects/"]
+  path = .gitconfig-home
+
+[includeIf "gitdir:~/dotfiles/"]
+  path = .gitconfig-home
