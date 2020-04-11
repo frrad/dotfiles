@@ -4,6 +4,7 @@ $packages = [
   'colordiff',
   'emacs-nox',
   'git',
+  'graphviz',
   'htop',
   'kpcli',
   'make',
