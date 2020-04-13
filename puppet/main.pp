@@ -8,6 +8,7 @@ $packages = [
   'htop',
   'kpcli',
   'make',
+  'pv',
   'python3-pip',
   'ripgrep',
   'tree',
