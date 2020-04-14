@@ -5,6 +5,9 @@
 [init]
   templatedir = ~/.git-templates
 
+[user]
+  name = Frederick Robinson
+
 # includeIf was introduced in git 2.13.0
 [includeIf "gitdir:~/Projects/"]
   path = .gitconfig-home
