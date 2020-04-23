@@ -25,15 +25,21 @@
   (require 'use-package))
 (require 'bind-key)
 
+(require 'use-package-ensure)
+(setq use-package-always-ensure t)
+
 ;; Now all the rest of my packages
-(use-package diminish
-  :ensure t)
+(use-package auto-package-update
+  :config
+  (setq auto-package-update-delete-old-versions t)
+  (setq auto-package-update-hide-results t)
+  (auto-package-update-maybe))
 
 (use-package smart-compile
   :init
   (progn
     (setq smart-compile-alist
-        '((go-mode          . "go test ./...")
+        '((go-mode          . "go build ./... && go test ./...")
           ("\\.py$"         . "python %f")
           ("\\.sh$"         . "./%f")
           (emacs-lisp-mode  . (emacs-lisp-byte-compile))
@@ -43,8 +49,9 @@
   (compilation-read-command nil "don't ask for alterations to compile command")
   :bind (("C-c C-c" . smart-compile)))
 
+(use-package diminish)
+
 (use-package ivy
-  :ensure t
   :diminish
   :config
   (setq
@@ -58,7 +65,6 @@
   :hook ((after-init . ivy-mode)))
 
 (use-package counsel
-  :ensure t
   :after ivy
   :bind (("C-x b" . counsel-switch-buffer)
 		 ("M-y" . counsel-yank-pop)
@@ -67,7 +73,6 @@
   :config (counsel-mode))
 
 (use-package swiper
-  :ensure t
   :after ivy
   :bind (("C-s" . swiper-isearch)
          ("C-r" . swiper-isearch-backward)
@@ -77,17 +82,14 @@
 (use-package terraform-mode
   :hook (terraform-mode . terraform-format-on-save-mode))
 
-(use-package magit
-  :ensure t)
+(use-package magit)
 
 (use-package flycheck
-  :ensure t
   :bind (("M-n" . flycheck-next-error)
 		 ("M-p" . flycheck-previous-error))
-  :init (global-flycheck-mode))
+  :hook ((after-init . global-flycheck-mode)))
 
 (use-package company
-  :ensure t
   :hook ((go-mode python-mode) . company-mode)
   :custom
   (company-dabbrev-downcase nil "don't downcase everything")
@@ -96,7 +98,6 @@
 )
 
 (use-package lsp-ui
-  :ensure t
   :commands lsp-ui-mode
   :defer t
   :custom
@@ -113,7 +114,6 @@
   (setq lsp-enable-snippet nil))
 
 (use-package go-mode
-  :ensure t
   :mode "\\.go$"
   :config
   (add-hook 'before-save-hook 'gofmt-before-save)
@@ -121,7 +121,6 @@
   (gofmt-args (list "-s" "-r=(a) -> a") "simplify on gofmt"))
 
 (use-package markdown-mode
-  :ensure t
   :commands (markdown-mode gfm-mode)
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . markdown-mode)
