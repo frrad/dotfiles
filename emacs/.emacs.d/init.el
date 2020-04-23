@@ -34,8 +34,7 @@
           (ivy-switch-buffer . ivy--regex-fuzzy)
           (ivy-switch-buffer-other-window . ivy--regex-fuzzy)
           (t . ivy--regex-plus)))
-  :hook ((after-init . ivy-mode))
-)
+  :hook ((after-init . ivy-mode)))
 
 (use-package counsel
   :ensure t
@@ -44,15 +43,15 @@
 		 ("M-y" . counsel-yank-pop)
 		 :map ivy-minibuffer-map
 		 ("M-y" . ivy-next-line-and-call))
-  :config (counsel-mode)
-)
+  :config (counsel-mode))
 
 (use-package swiper
   :ensure t
   :after ivy
-  :bind (("C-s" . swiper)
-         ("C-r" . swiper))
-)
+  :bind (("C-s" . swiper-isearch)
+         ("C-r" . swiper-isearch-backward)
+		 :map swiper-map
+         ("C-r" . ivy-previous-line)))
 
 (use-package terraform-mode
   :hook (terraform-mode . terraform-format-on-save-mode))
@@ -99,7 +98,6 @@
   (add-hook 'before-save-hook 'gofmt-before-save)
   :custom
   (gofmt-args (list "-s" "-r=(a) -> a") "simplify on gofmt"))
-
 
 (use-package markdown-mode
   :ensure t
