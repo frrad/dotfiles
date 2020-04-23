@@ -7,7 +7,7 @@
  '(org-startup-indented t)
  '(package-selected-packages
    (quote
-	(yaml-mode go-rename magit company-go py-autopep8 smex)))
+	(counsel yaml-mode go-rename magit company-go py-autopep8 smex)))
  '(rcirc-default-nick "frrad")
  '(rcirc-server-alist (quote (("home.frrad.com" :nick "Frederick" nil nil))))
  '(sql-port 5439)
