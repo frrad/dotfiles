@@ -26,14 +26,21 @@
 (require 'bind-key)
 
 ;; Now all the rest of my packages
+(use-package diminish
+  :ensure t)
+
 (use-package ivy
   :ensure t
+  :diminish
   :config
-  (setq ivy-re-builders-alist
-        '((counsel-M-x . ivy--regex-fuzzy)
-          (ivy-switch-buffer . ivy--regex-fuzzy)
-          (ivy-switch-buffer-other-window . ivy--regex-fuzzy)
-          (t . ivy--regex-plus)))
+  (setq
+   ivy-count-format "(%d/%d) "
+   ivy-use-virtual-buffers t
+   ivy-re-builders-alist
+   '((counsel-M-x . ivy--regex-fuzzy)
+	 (ivy-switch-buffer . ivy--regex-fuzzy)
+	 (ivy-switch-buffer-other-window . ivy--regex-fuzzy)
+	 (t . ivy--regex-plus)))
   :hook ((after-init . ivy-mode)))
 
 (use-package counsel
