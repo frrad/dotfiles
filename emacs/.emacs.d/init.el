@@ -29,6 +29,20 @@
 (use-package diminish
   :ensure t)
 
+(use-package smart-compile
+  :init
+  (progn
+    (setq smart-compile-alist
+        '((go-mode          . "go test ./...")
+          ("\\.py$"         . "python %f")
+          ("\\.sh$"         . "./%f")
+          (emacs-lisp-mode  . (emacs-lisp-byte-compile))
+         ))
+	)
+  :custom
+  (compilation-read-command nil "don't ask for alterations to compile command")
+  :bind (("C-c C-c" . smart-compile)))
+
 (use-package ivy
   :ensure t
   :diminish
@@ -130,8 +144,6 @@
 ;LaTeX / AUCTeX / TeX related settings
 (load "~/.emacs.d/tex.el")
 
-
-(global-set-key (kbd "M-B") 'recompile)
 
 ;;rcirc-mode
 (add-hook 'rcirc-mode-hook (lambda () (set (make-local-variable 'scroll-conservatively) 8192)))
