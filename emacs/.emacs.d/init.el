@@ -26,6 +26,33 @@
 (require 'bind-key)
 
 ;; Now all the rest of my packages
+(use-package ivy
+  :ensure t
+  :config
+  (setq ivy-re-builders-alist
+        '((counsel-M-x . ivy--regex-fuzzy)
+          (ivy-switch-buffer . ivy--regex-fuzzy)
+          (ivy-switch-buffer-other-window . ivy--regex-fuzzy)
+          (t . ivy--regex-plus)))
+  :hook ((after-init . ivy-mode)))
+
+(use-package counsel
+  :ensure t
+  :after ivy
+  :bind (("C-x b" . counsel-switch-buffer)
+		 ("M-y" . counsel-yank-pop)
+		 :map ivy-minibuffer-map
+		 ("M-y" . ivy-next-line-and-call))
+  :config (counsel-mode))
+
+(use-package swiper
+  :ensure t
+  :after ivy
+  :bind (("C-s" . swiper-isearch)
+         ("C-r" . swiper-isearch-backward)
+		 :map swiper-map
+         ("C-r" . ivy-previous-line)))
+
 (use-package terraform-mode
   :hook (terraform-mode . terraform-format-on-save-mode))
 
@@ -72,12 +99,6 @@
   :custom
   (gofmt-args (list "-s" "-r=(a) -> a") "simplify on gofmt"))
 
-(use-package smex
-  :ensure t
-  :bind ("M-x" . smex)
-  :custom
-  (smex-save-file "~/.emacs.d/.smex-items" "Put smex cache in ~/.emacs.d"))
-
 (use-package markdown-mode
   :ensure t
   :commands (markdown-mode gfm-mode)
@@ -117,8 +138,6 @@
 (setq inhibit-startup-screen t)      ; Skip emacs splash screen
 (put 'upcase-region 'disabled nil)   ; Turn on upcase-region
 (put 'downcase-region 'disabled nil)
-(require 'ido)
-(ido-mode t)                         ; ido-mode!
 (setq-default fill-column 80)        ; Default fill width 70 is too small
 (setenv "PAGER" "/bin/cat")          ; so man works in terminal
 ;Turn off menu-bar but only if in a terminal
