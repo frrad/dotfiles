@@ -29,6 +29,11 @@
 (setq use-package-always-ensure t)
 
 ;; Now all the rest of my packages
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; to bootstrap, set package-check-signature to nil
+(use-package gnu-elpa-keyring-update)
+
 (use-package auto-package-update
   :config
   (setq auto-package-update-delete-old-versions t)
