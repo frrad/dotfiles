@@ -39,7 +39,7 @@
   :init
   (progn
     (setq smart-compile-alist
-        '((go-mode          . "go build ./... && go test ./...")
+        '((go-mode          . "go test ./...")
           ("\\.py$"         . "python %f")
           ("\\.sh$"         . "./%f")
           (emacs-lisp-mode  . (emacs-lisp-byte-compile))
@@ -68,6 +68,7 @@
   :after ivy
   :bind (("C-x b" . counsel-switch-buffer)
 		 ("M-y" . counsel-yank-pop)
+		 ("M-s" . counsel-rg)
 		 :map ivy-minibuffer-map
 		 ("M-y" . ivy-next-line-and-call))
   :config (counsel-mode))
