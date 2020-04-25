@@ -28,3 +28,7 @@ class { 'golang':
   version   => '1.14.1',
   workspace => '/usr/local/src/go',
 }}
+
+ssh_keygen { $::sudo_user:
+  bits => 4096
+}
