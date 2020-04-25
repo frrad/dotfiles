@@ -3,6 +3,7 @@ HISTSIZE=100000
 SAVEHIST=100000
 setopt appendhistory INC_APPEND_HISTORY autocd beep extendedglob nomatch notify SHARE_HISTORY
 bindkey -e
+bindkey '^R' history-incremental-pattern-search-backward
 
 autoload -U colors && colors
 PS1="%{$fg[red]%}%n%{$reset_color%}@%{$fg[blue]%}%m %{$fg[yellow]%}%~ %{$reset_color%}%% "
