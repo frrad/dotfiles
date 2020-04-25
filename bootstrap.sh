@@ -2,17 +2,19 @@
 
 set -x
 
+install_if_not_exist () {
+  if ! [ -x "$(command -v $1)" ]; then
+	apt-get update
+	apt-get install -y $1
+  fi
+}
+
+
 target=`su -c 'echo $HOME/dotfiles' $SUDO_USER`
 
-if ! [ -x "$(command -v git)" ]; then
-  apt-get update
-  apt-get install -y git
-fi
-
-if ! [ -x "$(command -v puppet)" ]; then
-  apt-get update
-  apt-get install -y puppet r10k
-fi
+install_if_not_exist git
+install_if_not_exist puppet
+install_if_not_exist r10k
 
 if [ ! -d "$target" ]; then
   su -c "git clone https://github.com/frrad/dotfiles.git $target" $SUDO_USER
