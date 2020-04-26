@@ -16,7 +16,10 @@ $packages = [
   'zsh',
 ]
 
-package { $packages: ensure => 'latest' }
+package { $packages:
+  ensure => 'latest',
+  provider => 'brew'
+}
 
 user { $::sudo_user:
   ensure => present,

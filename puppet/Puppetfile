@@ -1,3 +1,4 @@
 mod 'dcoxall-golang', '1.2.0'
 mod 'puppetlabs-stdlib', '4.25.1'
 mod 'puppet-ssh_keygen', '4.1.0'
+mod 'gildas-homebrew', '0.4.16'

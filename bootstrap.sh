@@ -1,31 +1,36 @@
 #!/bin/bash
-
 set -x
 
-install_package () {
-  # What OS are we running?
-  if [[ "$OSTYPE" == "linux-gnu" ]]; then
+apt_install_if_not_exist () {
+  if ! [ -x "$(command -v $1)" ]; then
 	apt-get update
 	apt-get install -y $1
-  elif [[ `uname` == "Darwin" ]]; then
-    sudo -u $SUDO_USER brew install $1
-  else
-	echo 'Unknown OS!'
-	exit 1
   fi
 }
 
-install_if_not_exist () {
+gem_install_if_not_exist () {
   if ! [ -x "$(command -v $1)" ]; then
-    install_package $1
+	gem install $1
   fi
 }
 
-target=`su -c 'echo $HOME/dotfiles' $SUDO_USER`
 
-install_if_not_exist git
-install_if_not_exist puppet
-install_if_not_exist r10k
+user_homedir=$(eval echo ~$SUDO_USER)
+target="$user_homedir/dotfiles"
+
+# What OS are we running?
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+  apt_install_if_not_exist git
+  apt_install_if_not_exist puppet
+  apt_install_if_not_exist r10k
+elif [[ `uname` == "Darwin" ]]; then
+  gem_install_if_not_exist puppet
+  gem_install_if_not_exist r10k
+else
+  echo 'Unknown OS!'
+  exit 1
+fi
+
 
 if [ ! -d "$target" ]; then
   su -c "git clone https://github.com/frrad/dotfiles.git $target" $SUDO_USER
