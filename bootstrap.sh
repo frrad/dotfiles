@@ -2,13 +2,24 @@
 
 set -x
 
-install_if_not_exist () {
-  if ! [ -x "$(command -v $1)" ]; then
+install_package () {
+  # What OS are we running?
+  if [[ "$OSTYPE" == "linux-gnu" ]]; then
 	apt-get update
 	apt-get install -y $1
+  elif [[ `uname` == "Darwin" ]]; then
+    sudo -u $SUDO_USER brew install $1
+  else
+	echo 'Unknown OS!'
+	exit 1
   fi
 }
 
+install_if_not_exist () {
+  if ! [ -x "$(command -v $1)" ]; then
+    install_package $1
+  fi
+}
 
 target=`su -c 'echo $HOME/dotfiles' $SUDO_USER`
 
