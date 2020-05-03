@@ -25,6 +25,10 @@ export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$HOME/go/bin
 export PATH=$PATH:/usr/local/go/bin
 
+eval "$(dircolors ~/.dircolors)"
+
+# begin conditional configuration
+
 if [ -e "$HOME/.workrc" ]; then
   source "$HOME/.workrc"
 fi
