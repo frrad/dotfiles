@@ -7,7 +7,7 @@
  '(org-startup-indented t)
  '(package-selected-packages
    (quote
-	(auto-package-update smart-compile diminish counsel yaml-mode go-rename magit company-go py-autopep8 smex)))
+	(clang-format+ clang-format auto-package-update smart-compile diminish counsel yaml-mode go-rename magit company-go py-autopep8 smex)))
  '(rcirc-default-nick "frrad")
  '(rcirc-server-alist (quote (("home.frrad.com" :nick "Frederick" nil nil))))
  '(sql-port 5439)
