@@ -24,7 +24,13 @@ user { $::sudo_user:
 }
 
 node  default{
+      $arch = $facts['architecture'] ? {
+      'aarch64' => 'linux-arm64',
+        default            => 'linux-amd64',
+    }
+
 class { 'golang':
+      arch => $arch,
   version   => '1.14.1',
   workspace => '/usr/local/src/go',
 }}
