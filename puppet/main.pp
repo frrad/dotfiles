@@ -1,6 +1,7 @@
 $packages = [
   'apt-file',
   'binutils',
+  'black',
   'colordiff',
   'emacs-nox',
   'fzf',
