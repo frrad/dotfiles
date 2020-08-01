@@ -3,6 +3,7 @@ $packages = [
   'binutils',
   'colordiff',
   'emacs-nox',
+  'fzf',
   'git',
   'graphviz',
   'htop',
