@@ -25,9 +25,16 @@ export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$HOME/go/bin
 export PATH=$PATH:/usr/local/go/bin
 
-if [ -e "$HOME/.workrc" ]; then
-  source "$HOME/.workrc"
-fi
+sie () {
+  if [ -e "$1" ]; then
+	source "$1"
+  fi
+}
+
+sie "$HOME/.workrc"
+
+sie "/usr/share/doc/fzf/examples/key-bindings.zsh"
+sie "/usr/share/zsh/vendor-completions/_fzf"
 
 # What OS are we running?
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
