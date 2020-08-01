@@ -88,6 +88,11 @@
 (use-package terraform-mode
   :hook (terraform-mode . terraform-format-on-save-mode))
 
+(use-package python-black
+  :hook python-mode
+  :config
+  (python-black-on-save-mode))
+
 (use-package magit)
 
 (use-package flycheck
