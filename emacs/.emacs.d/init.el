@@ -61,13 +61,14 @@
   :config
   (setq
    ivy-count-format "(%d/%d) "
-   ivy-use-virtual-buffers t
-   ivy-re-builders-alist
-   '((counsel-M-x . ivy--regex-fuzzy)
-	 (ivy-switch-buffer . ivy--regex-fuzzy)
-	 (ivy-switch-buffer-other-window . ivy--regex-fuzzy)
-	 (t . ivy--regex-plus)))
+   ivy-use-virtual-buffers t)
   :hook ((after-init . ivy-mode)))
+
+(use-package which-key
+  :bind
+  ("C-h b" . which-key-show-top-level)
+  :init
+  (which-key-mode t))
 
 (use-package counsel
   :after ivy

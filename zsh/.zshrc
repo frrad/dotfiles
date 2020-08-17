@@ -36,6 +36,10 @@ sie "$HOME/.workrc"
 sie "/usr/share/doc/fzf/examples/key-bindings.zsh"
 sie "/usr/share/zsh/vendor-completions/_fzf"
 
+# mac
+sie "/usr/local/Cellar/fzf/0.22.0/shell/completion.zsh"
+sie "/usr/local/Cellar/fzf/0.22.0/shell/key-bindings.zsh"
+
 # What OS are we running?
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
     source "$HOME/.linux.zsh"
