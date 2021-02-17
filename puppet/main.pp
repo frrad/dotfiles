@@ -15,6 +15,7 @@ $packages = [
   'pv',
   'python3-pip',
   'ripgrep',
+  'screen',
   'tree',
   'xstow',
   'zsh',
@@ -35,7 +36,7 @@ node  default{
 
   class { 'golang':
     arch => $arch,
-    version   => '1.14.1',
+    version   => '1.16',
     workspace => '/usr/local/src/go',
   }
 }

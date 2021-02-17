@@ -22,3 +22,6 @@ cd ${target}/puppet
 r10k puppetfile install
 export FACTER_sudo_user=$SUDO_USER
 puppet apply --test --verbose $target/puppet/main.pp --modulepath=$target/puppet/modules
+
+cd $target
+sudo -u $SUDO_USER ./stow.sh
