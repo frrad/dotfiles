@@ -11,6 +11,7 @@ $packages = [
   'jq',
   'kpcli',
   'make',
+  'nano',
   'pv',
   'python3-pip',
   'ripgrep',
