@@ -15,6 +15,7 @@ $packages = [
   'pv',
   'python3-pip',
   'ripgrep',
+  'screen',
   'tree',
   'xstow',
   'zsh',
