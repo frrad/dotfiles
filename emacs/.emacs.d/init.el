@@ -9,6 +9,9 @@
 ;; |  __/ ___ \ |___| . \  / ___ \ |_| | |___ ___) |
 ;; |_| /_/   \_\____|_|\_\/_/   \_\____|_____|____/
 
+;; work around some problems with emacs 26.1
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+
 ;; Loads use-package which is then used to load and configure all other packages
 ;; https://github.com/CachesToCaches/getting_started_with_use_package/blob/master/init-use-package.el
 (require 'package)
