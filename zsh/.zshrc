@@ -1,7 +1,15 @@
 HISTFILE=~/.histfile
 HISTSIZE=100000
 SAVEHIST=100000
-setopt appendhistory INC_APPEND_HISTORY autocd beep extendedglob nomatch notify SHARE_HISTORY
+
+setopt extended_history
+setopt inc_append_history_time
+setopt auto_cd
+setopt beep
+setopt extended_glob
+setopt nomatch
+setopt notify
+
 bindkey -e
 bindkey '^R' history-incremental-pattern-search-backward
 
