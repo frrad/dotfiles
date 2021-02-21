@@ -23,6 +23,7 @@ alias less='less -R'
 alias emacs="emacsclient -nw -a \"\" -c"
 alias xclip='xclip -selection c'
 alias recent='ls -t | head'
+alias socks='ssh -v -D 8080 -C -N'
 
 autoload -U select-word-style
 select-word-style bash
