@@ -141,11 +141,8 @@
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode)))
 
-  (add-hook 'prog-mode-hook
-          (lambda ()
-            (flyspell-prog-mode)
-            ; ...
-          ))
+(add-hook 'prog-mode-hook (lambda ()
+							(flyspell-prog-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;Load path to include subdirectories of .emacs.d
