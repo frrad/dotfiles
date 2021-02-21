@@ -8,6 +8,7 @@ $packages = [
   'git',
   'graphviz',
   'htop',
+  'ispell',
   'jq',
   'kpcli',
   'make',
