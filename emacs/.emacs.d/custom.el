@@ -21,4 +21,7 @@
  ;; If there is more than one, they won't work right.
  '(font-latex-sectioning-2-face ((t (:inherit font-latex-sectioning-3-face))))
  '(font-latex-sectioning-3-face ((t (:inherit font-latex-sectioning-4-face))))
- '(font-latex-sectioning-4-face ((t (:inherit font-latex-sectioning-5-face)))))
+ '(font-latex-sectioning-4-face ((t (:inherit font-latex-sectioning-5-face))))
+ '(font-lock-function-name-face ((t (:foreground "color-220"))))
+ '(font-lock-string-face ((t (:foreground "color-51"))))
+ '(magit-section-highlight ((t (:background "black")))))
