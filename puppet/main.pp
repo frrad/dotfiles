@@ -15,6 +15,7 @@ $packages = [
   'nano',
   'pv',
   'python3-pip',
+  'python3-venv',
   'ripgrep',
   'screen',
   'tree',
