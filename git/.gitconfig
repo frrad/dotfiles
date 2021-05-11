@@ -12,5 +12,8 @@
 [includeIf "gitdir:~/Projects/"]
   path = .gitconfig-home
 
+[includeIf "gitdir:~/org/"]
+  path = .gitconfig-home
+
 [includeIf "gitdir:~/dotfiles/"]
   path = .gitconfig-home
