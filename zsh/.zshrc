@@ -8,6 +8,8 @@ bindkey '^R' history-incremental-pattern-search-backward
 autoload -U colors && colors
 PS1="%{$fg[red]%}%n%{$reset_color%}@%{$fg[blue]%}%m %{$fg[yellow]%}%~ %{$reset_color%}%% "
 
+[[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ ' && return
+
 alias grep='grep --color=auto'
 alias diff='colordiff'
 alias ll='ls -lah'
