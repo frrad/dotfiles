@@ -135,6 +135,14 @@
   :custom
   (gofmt-args (list "-s" "-r=(a) -> a") "simplify on gofmt"))
 
+(lsp-register-client
+ (make-lsp-client :new-connection (lsp-tramp-connection "gopls")
+                  :major-modes '(go-mode)
+                  :remote? t
+                  :server-id 'gopls-remote))
+
+
+
 (use-package markdown-mode
   :commands (markdown-mode gfm-mode)
   :mode (("README\\.md\\'" . gfm-mode)

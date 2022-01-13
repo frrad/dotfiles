@@ -3,10 +3,13 @@ $packages = [
   'binutils',
   'black',
   'colordiff',
+  'dnsutils', # dig
   'emacs-nox',
+  'figlet',
   'fzf',
   'git',
   'graphviz',
+  'ghostscript',
   'htop',
   'ispell',
   'jq',
