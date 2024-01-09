@@ -15,7 +15,7 @@ if ! [ -x "$(command -v puppet)" ]; then
 fi
 
 if [ ! -d "$target" ]; then
-  su -c "git clone https://github.com/frrad/dotfiles.git $target" $SUDO_USER
+  sudo -u $SUDO_USER git clone https://github.com/frrad/dotfiles.git $target
 fi
 
 cd ${target}/puppet
