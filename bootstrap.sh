@@ -2,7 +2,7 @@
 
 set -x
 
-target=`su -c 'echo $HOME/dotfiles' $SUDO_USER`
+target=$(sudo -u $SUDO_USER echo $HOME/dotfiles)
 
 if ! [ -x "$(command -v git)" ]; then
   apt-get update
