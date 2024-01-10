@@ -2,7 +2,7 @@
 
 set -x
 
-target=`su -c 'echo $HOME/dotfiles' $SUDO_USER`
+target=$(sudo -u $SUDO_USER echo $HOME/dotfiles)
 
 if ! [ -x "$(command -v git)" ]; then
   apt-get update
@@ -15,7 +15,7 @@ if ! [ -x "$(command -v puppet)" ]; then
 fi
 
 if [ ! -d "$target" ]; then
-  su -c "git clone https://github.com/frrad/dotfiles.git $target" $SUDO_USER
+  sudo -u $SUDO_USER git clone https://github.com/frrad/dotfiles.git $target
 fi
 
 cd ${target}/puppet
