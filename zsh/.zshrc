@@ -14,7 +14,19 @@ bindkey -e
 bindkey '^R' history-incremental-pattern-search-backward
 
 autoload -U colors && colors
-PS1="%{$fg[red]%}%n%{$reset_color%}@%{$fg[blue]%}%m %{$fg[yellow]%}%~ %{$reset_color%}%% "
+
+hash_hostname_to_color() {
+    local hash=$(echo "%m" | cksum | awk '{print $1}')
+    local blacklist=(188 189 190 191 192 193 194 195)
+    local color_code=$((hash % 256 + 1))
+    while [[ " ${blacklist[@]} " =~ " ${color_code} " ]]; do
+        ((hash++))
+        color_code=$((hash % 256 + 1))
+    done
+    echo $color_code
+}
+
+PS1="%F{red}%n%f@%F{$(hash_hostname_to_color)}%m%f %F{yellow}%~%f %% "
 
 alias grep='grep --color=auto'
 alias diff='colordiff'
@@ -33,6 +45,7 @@ export GOPATH=$HOME/go
 export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$HOME/go/bin
 export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:$HOME/Library/Python/3.9/bin
 
 sie () {
   if [ -e "$1" ]; then
@@ -46,8 +59,8 @@ sie "/usr/share/doc/fzf/examples/key-bindings.zsh"
 sie "/usr/share/zsh/vendor-completions/_fzf"
 
 # mac
-sie "/usr/local/Cellar/fzf/0.22.0/shell/completion.zsh"
-sie "/usr/local/Cellar/fzf/0.22.0/shell/key-bindings.zsh"
+sie "/opt/homebrew/opt/fzf/shell/completion.zsh"
+sie "/opt/homebrew/opt/fzf/shell/key-bindings.zsh"
 
 # What OS are we running?
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
