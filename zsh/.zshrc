@@ -26,7 +26,10 @@ hash_hostname_to_color() {
     echo $color_code
 }
 
-PS1="%F{red}%n%f@%F{$(hash_hostname_to_color)}%m%f %F{yellow}%~%f %% "
+precmd() {
+  local color_code=$(hash_hostname_to_color)
+  PS1=$(print -P "%F{red}%n%f@%%{\\e[38;5;${color_code}m%}%m%%{\$\\e[0m%} %F{yellow}%~%f % ")
+}
 
 alias grep='grep --color=auto'
 alias diff='colordiff'
