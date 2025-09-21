@@ -14,7 +14,25 @@ bindkey -e
 bindkey '^R' history-incremental-pattern-search-backward
 
 autoload -U colors && colors
-PS1="%{$fg[red]%}%n%{$reset_color%}@%{$fg[blue]%}%m %{$fg[yellow]%}%~ %{$reset_color%}%% "
+
+# A curated set of decent 256-color indexes (avoid super dark/light)
+# (You can add/remove to taste)
+typeset -a HOST_256_PALETTE=(33 36 37 38 41 42 44 45 70 71 74 75 106 110 140 141 174 175 176 177 178 179 180 181)
+
+host_color_idx() {
+  local h=${HOST:-${
+    :-%m} }
+  local -i sum=0 i code
+  for (( i=1; i<=${#h}; i++ )); do
+    printf -v code '%d' "'${h[i]}"
+    (( sum += code ))
+  done
+  local -i idx=$(( (sum % ${#HOST_256_PALETTE[@]}) + 1 ))
+  print -r -- ${HOST_256_PALETTE[idx]}
+}
+
+HOST_COLOR="$(host_color_idx)"
+PROMPT="%F{red}%n%f@%F{${HOST_COLOR}}%m%f %F{yellow}%~%f %# "
 
 alias grep='grep --color=auto'
 alias diff='colordiff'
@@ -23,7 +41,7 @@ alias less='less -R'
 alias emacs="emacsclient -nw -a \"\" -c"
 alias xclip='xclip -selection c'
 alias recent='ls -t | head'
-alias socks='ssh -v -D 8080 -C -N'
+alias socks='autossh -v -D 8080 -C -N'
 
 autoload -U select-word-style
 select-word-style bash
