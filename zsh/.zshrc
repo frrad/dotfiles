@@ -32,7 +32,7 @@ host_color_idx() {
 }
 
 HOST_COLOR="$(host_color_idx)"
-PROMPT="%F{red}%n%f@%F{${HOST_COLOR}}%m%f %F{yellow}%~%f %# "
+PROMPT="%F{196}%n%f@%F{${HOST_COLOR}}%m%f %F{yellow}%~%f %# "
 
 alias grep='grep --color=auto'
 alias diff='colordiff'
