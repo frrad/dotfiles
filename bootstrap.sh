@@ -2,6 +2,11 @@
 set -euo pipefail
 
 apt_updated=0
+package_manifest=
+script_dir=
+target=
+user_home=
+os_name=
 
 have_cmd() {
   command -v "$1" >/dev/null 2>&1
@@ -19,30 +24,6 @@ brew_as_user() {
   run_as_user env PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin" brew "$@"
 }
 
-have_puppet_tool() {
-  if have_cmd "$1"; then
-    return 0
-  fi
-
-  [ -x "/opt/puppetlabs/bin/$1" ]
-}
-
-puppet_tool() {
-  if have_cmd "$1"; then
-    printf '%s\n' "$1"
-  else
-    printf '/opt/puppetlabs/bin/%s\n' "$1"
-  fi
-}
-
-puppet_gem_tool() {
-  if have_cmd gem; then
-    printf '%s\n' gem
-  else
-    printf '/opt/puppetlabs/puppet/bin/gem\n'
-  fi
-}
-
 install_with_apt() {
   if [ "$apt_updated" -eq 0 ]; then
     apt-get update
@@ -52,49 +33,55 @@ install_with_apt() {
   apt-get install -y "$@"
 }
 
+install_with_brew() {
+  brew_as_user install "$@"
+}
+
 install_homebrew_if_needed() {
   if ! have_user_cmd brew; then
     run_as_user /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
 }
 
-ensure_linux_deps() {
-  if ! have_cmd git; then
-    install_with_apt git
-  fi
-
-  if ! have_cmd puppet; then
-    install_with_apt puppet r10k
-  fi
+resolve_os() {
+  os_name="$(uname -s)"
 }
 
-ensure_darwin_deps() {
-  install_homebrew_if_needed
-
-  if ! have_user_cmd git; then
-    brew_as_user install git
-  fi
-
-  if ! have_puppet_tool puppet; then
-    brew_as_user install --cask puppetlabs/puppet/puppet-agent
-  fi
-
-  if ! have_puppet_tool r10k; then
-    "$(puppet_gem_tool)" install r10k -v 4.0.0 --no-document
-  fi
+resolve_script_dir() {
+  script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  package_manifest="${script_dir}/packages.tsv"
 }
 
-ensure_deps() {
-  case "$(uname -s)" in
+managed_cmd_exists() {
+  local linux_check_cmd="$1"
+  local darwin_check_cmd="$2"
+
+  case "$os_name" in
     Linux)
-      ensure_linux_deps
+      [ -n "$linux_check_cmd" ] && have_cmd "$linux_check_cmd"
       ;;
     Darwin)
-      ensure_darwin_deps
+      [ -n "$darwin_check_cmd" ] && have_user_cmd "$darwin_check_cmd"
       ;;
     *)
-      echo "Unsupported OS: $(uname -s)" >&2
-      exit 1
+      return 1
+      ;;
+  esac
+}
+
+package_spec_for_current_os() {
+  local apt_packages="$1"
+  local brew_packages="$2"
+
+  case "$os_name" in
+    Linux)
+      printf '%s\n' "$apt_packages"
+      ;;
+    Darwin)
+      printf '%s\n' "$brew_packages"
+      ;;
+    *)
+      return 1
       ;;
   esac
 }
@@ -107,10 +94,28 @@ require_sudo_context() {
 }
 
 resolve_target() {
-  local user_home
-
   user_home=$(sudo -Hiu "$SUDO_USER" sh -lc 'printf %s "$HOME"')
   target="${user_home}/dotfiles"
+}
+
+ensure_bootstrap_deps() {
+  case "$os_name" in
+    Linux)
+      if ! have_cmd git; then
+        install_with_apt git
+      fi
+      ;;
+    Darwin)
+      install_homebrew_if_needed
+      if ! have_user_cmd git; then
+        install_with_brew git
+      fi
+      ;;
+    *)
+      echo "Unsupported OS: $os_name" >&2
+      exit 1
+      ;;
+  esac
 }
 
 ensure_checkout_present() {
@@ -119,17 +124,48 @@ ensure_checkout_present() {
   fi
 }
 
-apply_puppet() {
-  local r10k_bin
-  local puppet_bin
+ensure_packages() {
+  local name linux_check_cmd darwin_check_cmd apt_packages brew_packages package_spec
+  local -a package_args
 
-  r10k_bin=$(puppet_tool r10k)
-  puppet_bin=$(puppet_tool puppet)
+  while IFS='|' read -r name linux_check_cmd darwin_check_cmd apt_packages brew_packages; do
+    if [ -z "$name" ] || [[ "$name" == \#* ]]; then
+      continue
+    fi
 
-  cd "$target/puppet"
-  "$r10k_bin" puppetfile install
-  export FACTER_sudo_user="$SUDO_USER"
-  "$puppet_bin" apply --test --verbose "$target/puppet/main.pp" --modulepath="$target/puppet/modules"
+    if managed_cmd_exists "$linux_check_cmd" "$darwin_check_cmd"; then
+      continue
+    fi
+
+    package_spec=$(package_spec_for_current_os "$apt_packages" "$brew_packages")
+    if [ -z "$package_spec" ]; then
+      echo "Skipping $name on $os_name: no package mapping" >&2
+      continue
+    fi
+
+    read -r -a package_args <<<"$package_spec"
+    case "$os_name" in
+      Linux)
+        install_with_apt "${package_args[@]}"
+        ;;
+      Darwin)
+        install_with_brew "${package_args[@]}"
+        ;;
+    esac
+  done < "$package_manifest"
+}
+
+ensure_ssh_key() {
+  local ssh_dir
+  local key_path
+
+  ssh_dir="${user_home}/.ssh"
+  key_path="${ssh_dir}/id_rsa"
+
+  run_as_user mkdir -p "$ssh_dir"
+  if [ ! -f "$key_path" ]; then
+    run_as_user ssh-keygen -t rsa -b 4096 -N "" -f "$key_path"
+  fi
 }
 
 run_stow() {
@@ -139,10 +175,13 @@ run_stow() {
 
 main() {
   require_sudo_context
+  resolve_os
+  resolve_script_dir
   resolve_target
-  ensure_deps
+  ensure_bootstrap_deps
   ensure_checkout_present
-  apply_puppet
+  ensure_packages
+  ensure_ssh_key
   run_stow
 }
 
