@@ -55,9 +55,10 @@ install_with_system_pm() {
 
 install_homebrew_if_needed() {
   if ! have_user_cmd brew; then
-    # Homebrew's installer requires curl.
-    if ! have_cmd curl; then
-      install_with_system_pm curl
+    # Homebrew on Linux requires a C toolchain and a handful of utilities.
+    # Install them via the system package manager before handing off.
+    if [ "$os_name" = "Linux" ]; then
+      install_with_system_pm curl file gcc gcc-c++ make procps-ng
     fi
     run_as_user env NONINTERACTIVE=1 /bin/bash -c \
       "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
