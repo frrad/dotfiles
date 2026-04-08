@@ -41,8 +41,24 @@ install_with_brew() {
   brew_as_user install "$@"
 }
 
+# Install a package using whatever system package manager is available.
+# Used only for pre-brew bootstrap prerequisites (e.g. curl).
+install_with_system_pm() {
+  if have_cmd apt-get; then
+    install_with_apt "$@"
+  elif have_cmd dnf; then
+    dnf install -y "$@"
+  elif have_cmd yum; then
+    yum install -y "$@"
+  fi
+}
+
 install_homebrew_if_needed() {
   if ! have_user_cmd brew; then
+    # Homebrew's installer requires curl.
+    if ! have_cmd curl; then
+      install_with_system_pm curl
+    fi
     run_as_user env NONINTERACTIVE=1 /bin/bash -c \
       "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
