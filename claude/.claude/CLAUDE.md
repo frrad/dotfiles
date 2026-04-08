@@ -5,5 +5,5 @@
 
 ## GitHub Repo Setup
 - Squash merge only (disable merge commits and rebase merges).
-- Branch protection (require PRs, no direct pushes) — only set up on public repos. Skip for private repos (requires Pro).
+- Branch protection (require PRs, no direct pushes, enforce for admins) — only set up on public repos. Skip for private repos (requires Pro).
 - Keep repos private unless told otherwise.
