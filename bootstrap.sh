@@ -55,9 +55,19 @@ install_with_system_pm() {
 
 install_homebrew_if_needed() {
   if ! have_user_cmd brew; then
-    # Homebrew's installer requires curl.
-    if ! have_cmd curl; then
-      install_with_system_pm curl
+    # Homebrew on Linux requires a C toolchain and a handful of utilities.
+    # Only install what's missing to avoid conflicts (e.g. curl vs
+    # curl-minimal on Amazon Linux).
+    if [ "$os_name" = "Linux" ]; then
+      local needed=()
+      have_cmd curl  || needed+=(curl)
+      have_cmd file  || needed+=(file)
+      have_cmd gcc   || needed+=(gcc gcc-c++)
+      have_cmd make  || needed+=(make)
+      have_cmd ps    || needed+=(procps-ng)
+      if [ ${#needed[@]} -gt 0 ]; then
+        install_with_system_pm "${needed[@]}"
+      fi
     fi
     run_as_user env NONINTERACTIVE=1 /bin/bash -c \
       "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -192,7 +202,10 @@ ensure_ssh_key() {
 
 run_stow() {
   cd "$target"
-  run_as_user ./stow.sh
+  case "$pkg_manager" in
+    brew) run_as_user env PATH="$brew_path" ./stow.sh ;;
+    *)    run_as_user ./stow.sh ;;
+  esac
 }
 
 main() {
