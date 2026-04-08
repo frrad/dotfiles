@@ -1,4 +1,4 @@
-# name|linux_check_cmd|darwin_check_cmd|apt_packages|brew_packages
+# name|apt_check_cmd|brew_check_cmd|apt_packages|brew_packages
 apt-file|apt-file||apt-file|
 binutils|strings|strings|binutils|binutils
 black|black|black|black|black
