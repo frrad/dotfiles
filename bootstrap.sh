@@ -17,9 +17,12 @@ run_as_user() {
   sudo -Hu "$SUDO_USER" -- "$@"
 }
 
+# Explicit PATH for brew commands. Needed because brew installs to
+# user-local prefixes that aren't in root's PATH.
 brew_path="/home/linuxbrew/.linuxbrew/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
 
 have_user_cmd() {
+  # sh -lc '...' sh "$1" — the extra "sh" sets $0 so $1 is the argument.
   run_as_user env PATH="$brew_path" \
     sh -lc 'command -v "$1" >/dev/null 2>&1' sh "$1"
 }
@@ -79,6 +82,7 @@ resolve_os() {
 }
 
 resolve_pkg_manager() {
+  # Non-apt Linux (e.g. Amazon Linux) uses Homebrew, same as macOS.
   case "$os_name" in
     Darwin)
       pkg_manager="brew"
@@ -126,6 +130,8 @@ package_spec() {
   esac
 }
 
+# Must be run via sudo so we can install system packages as root
+# while using SUDO_USER to run user-level commands (brew, stow, etc.).
 require_sudo_context() {
   if [ -z "${SUDO_USER:-}" ]; then
     echo "bootstrap.sh must be run via sudo so SUDO_USER is available" >&2
@@ -164,6 +170,7 @@ ensure_packages() {
   local name apt_check_cmd brew_check_cmd apt_packages brew_packages
   local -a package_args
 
+  # Fields: name|apt_check_cmd|brew_check_cmd|apt_packages|brew_packages
   while IFS='|' read -r name apt_check_cmd brew_check_cmd apt_packages brew_packages; do
     if [ -z "$name" ] || [[ "$name" == \#* ]]; then
       continue
