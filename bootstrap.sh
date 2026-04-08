@@ -13,17 +13,27 @@ have_cmd() {
   command -v "$1" >/dev/null 2>&1
 }
 
+user_brew_bin() {
+  local resolved_home="${user_home:-}"
+
+  if [ -z "$resolved_home" ]; then
+    resolved_home=$(sudo -Hiu "$SUDO_USER" sh -lc 'printf %s "$HOME"')
+  fi
+
+  printf '%s/.linuxbrew/bin\n' "$resolved_home"
+}
+
 run_as_user() {
   sudo -Hu "$SUDO_USER" -- "$@"
 }
 
 have_user_cmd() {
-  run_as_user env PATH="/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:/usr/local/bin:/usr/bin:/bin" \
+  run_as_user env PATH="/opt/homebrew/bin:$(user_brew_bin):/usr/local/bin:/usr/bin:/bin" \
     sh -lc 'command -v "$1" >/dev/null 2>&1' sh "$1"
 }
 
 brew_as_user() {
-  run_as_user env PATH="/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:/usr/local/bin:/usr/bin:/bin" brew "$@"
+  run_as_user env PATH="/opt/homebrew/bin:$(user_brew_bin):/usr/local/bin:/usr/bin:/bin" brew "$@"
 }
 
 install_with_apt() {
