@@ -3,7 +3,6 @@ set -euo pipefail
 
 apt_updated=0
 package_manifest=
-package_manifest_source=
 script_dir=
 target=
 user_home=
@@ -51,40 +50,7 @@ resolve_os() {
 
 resolve_script_dir() {
   script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-  package_manifest_source="${script_dir}/packages.toml"
-}
-
-render_package_manifest() {
-  package_manifest="$(mktemp)"
-  python3 - "$package_manifest_source" "$package_manifest" <<'PY'
-import sys
-import tomllib
-
-
-def scalar_or_join(value):
-    if isinstance(value, list):
-        return " ".join(value)
-    if value is None:
-        return ""
-    return str(value)
-
-
-src, dst = sys.argv[1], sys.argv[2]
-with open(src, "rb") as f:
-    data = tomllib.load(f)
-
-with open(dst, "w", encoding="utf-8") as out:
-    for pkg in data["package"]:
-        name = pkg["name"]
-        check = pkg.get("check", name)
-        linux_check = pkg.get("linux_check", check)
-        darwin_check = pkg.get("darwin_check", check)
-        apt = scalar_or_join(pkg.get("apt", name))
-        brew = scalar_or_join(pkg.get("brew", name))
-        out.write(
-            "|".join([name, linux_check, darwin_check, apt, brew]) + "\n"
-        )
-PY
+  package_manifest="${script_dir}/packages.tsv"
 }
 
 managed_cmd_exists() {
@@ -139,17 +105,11 @@ ensure_bootstrap_deps() {
       if ! have_cmd git; then
         install_with_apt git
       fi
-      if ! have_cmd python3; then
-        install_with_apt python3
-      fi
       ;;
     Darwin)
       install_homebrew_if_needed
       if ! have_user_cmd git; then
         install_with_brew git
-      fi
-      if ! have_user_cmd python3; then
-        install_with_brew python
       fi
       ;;
     *)
@@ -220,7 +180,6 @@ main() {
   resolve_script_dir
   resolve_target
   ensure_bootstrap_deps
-  render_package_manifest
   ensure_checkout_present
   ensure_packages
   ensure_ssh_key
