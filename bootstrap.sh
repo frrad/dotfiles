@@ -13,11 +13,12 @@ have_cmd() {
 }
 
 run_as_user() {
-  sudo -Hiu "$SUDO_USER" -- "$@"
+  sudo -Hu "$SUDO_USER" -- "$@"
 }
 
 have_user_cmd() {
-  run_as_user sh -lc 'command -v "$1" >/dev/null 2>&1' sh "$1"
+  run_as_user env PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin" \
+    sh -lc 'command -v "$1" >/dev/null 2>&1' sh "$1"
 }
 
 brew_as_user() {
@@ -146,10 +147,10 @@ ensure_packages() {
     read -r -a package_args <<<"$package_spec"
     case "$os_name" in
       Linux)
-        install_with_apt "${package_args[@]}"
+        install_with_apt "${package_args[@]}" </dev/null
         ;;
       Darwin)
-        install_with_brew "${package_args[@]}"
+        install_with_brew "${package_args[@]}" </dev/null
         ;;
     esac
   done < "$package_manifest"
@@ -164,7 +165,7 @@ ensure_ssh_key() {
 
   run_as_user mkdir -p "$ssh_dir"
   if [ ! -f "$key_path" ]; then
-    run_as_user ssh-keygen -t rsa -b 4096 -N "" -f "$key_path"
+    run_as_user sh -lc 'ssh-keygen -t rsa -b 4096 -N "" -f "$1"' sh "$key_path"
   fi
 }
 
