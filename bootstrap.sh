@@ -19,6 +19,22 @@ brew_as_user() {
   run_as_user env PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin" brew "$@"
 }
 
+have_puppet_tool() {
+  if have_cmd "$1"; then
+    return 0
+  fi
+
+  [ -x "/opt/puppetlabs/bin/$1" ]
+}
+
+puppet_tool() {
+  if have_cmd "$1"; then
+    printf '%s\n' "$1"
+  else
+    printf '/opt/puppetlabs/bin/%s\n' "$1"
+  fi
+}
+
 install_with_apt() {
   if [ "$apt_updated" -eq 0 ]; then
     apt-get update
@@ -51,12 +67,8 @@ ensure_darwin_deps() {
     brew_as_user install git
   fi
 
-  if ! have_user_cmd puppet; then
-    brew_as_user install puppet
-  fi
-
-  if ! have_user_cmd r10k; then
-    brew_as_user install r10k
+  if ! have_puppet_tool puppet || ! have_puppet_tool r10k; then
+    brew_as_user install --cask puppetlabs/puppet/puppet-agent
   fi
 }
 
@@ -96,10 +108,16 @@ ensure_checkout_present() {
 }
 
 apply_puppet() {
+  local r10k_bin
+  local puppet_bin
+
+  r10k_bin=$(puppet_tool r10k)
+  puppet_bin=$(puppet_tool puppet)
+
   cd "$target/puppet"
-  r10k puppetfile install
+  "$r10k_bin" puppetfile install
   export FACTER_sudo_user="$SUDO_USER"
-  puppet apply --test --verbose "$target/puppet/main.pp" --modulepath="$target/puppet/modules"
+  "$puppet_bin" apply --test --verbose "$target/puppet/main.pp" --modulepath="$target/puppet/modules"
 }
 
 run_stow() {
