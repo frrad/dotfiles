@@ -13,14 +13,23 @@ have_cmd() {
   command -v "$1" >/dev/null 2>&1
 }
 
-user_brew_bin() {
+user_brew_path() {
   local resolved_home="${user_home:-}"
+  local user_prefix=
+  local shared_prefix="/home/linuxbrew/.linuxbrew/bin"
 
   if [ -z "$resolved_home" ]; then
     resolved_home=$(sudo -Hiu "$SUDO_USER" sh -lc 'printf %s "$HOME"')
   fi
 
-  printf '%s/.linuxbrew/bin\n' "$resolved_home"
+  user_prefix="${resolved_home}/.linuxbrew/bin"
+
+  if [ -x "${shared_prefix}/brew" ]; then
+    printf '/opt/homebrew/bin:%s:%s:/usr/local/bin:/usr/bin:/bin\n' "$shared_prefix" "$user_prefix"
+    return
+  fi
+
+  printf '/opt/homebrew/bin:%s:%s:/usr/local/bin:/usr/bin:/bin\n' "$user_prefix" "$shared_prefix"
 }
 
 run_as_user() {
@@ -28,12 +37,12 @@ run_as_user() {
 }
 
 have_user_cmd() {
-  run_as_user env PATH="/opt/homebrew/bin:$(user_brew_bin):/usr/local/bin:/usr/bin:/bin" \
+  run_as_user env PATH="$(user_brew_path)" \
     sh -lc 'command -v "$1" >/dev/null 2>&1' sh "$1"
 }
 
 brew_as_user() {
-  run_as_user env PATH="/opt/homebrew/bin:$(user_brew_bin):/usr/local/bin:/usr/bin:/bin" brew "$@"
+  run_as_user env PATH="$(user_brew_path)" brew "$@"
 }
 
 install_with_apt() {
