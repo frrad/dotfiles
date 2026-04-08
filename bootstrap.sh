@@ -66,7 +66,13 @@ ensure_deps() {
   esac
 }
 
-target=$(su -c 'echo $HOME/dotfiles' $SUDO_USER)
+if [ -z "${SUDO_USER:-}" ]; then
+  echo "bootstrap.sh must be run via sudo so SUDO_USER is available" >&2
+  exit 1
+fi
+
+user_home=$(sudo -Hiu "$SUDO_USER" sh -lc 'printf %s "$HOME"')
+target="${user_home}/dotfiles"
 
 ensure_deps
 
