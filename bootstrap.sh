@@ -192,7 +192,10 @@ ensure_ssh_key() {
 
 run_stow() {
   cd "$target"
-  run_as_user ./stow.sh
+  case "$pkg_manager" in
+    brew) run_as_user env PATH="$brew_path" ./stow.sh ;;
+    *)    run_as_user ./stow.sh ;;
+  esac
 }
 
 main() {
