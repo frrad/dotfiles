@@ -56,9 +56,18 @@ install_with_system_pm() {
 install_homebrew_if_needed() {
   if ! have_user_cmd brew; then
     # Homebrew on Linux requires a C toolchain and a handful of utilities.
-    # Install them via the system package manager before handing off.
+    # Only install what's missing to avoid conflicts (e.g. curl vs
+    # curl-minimal on Amazon Linux).
     if [ "$os_name" = "Linux" ]; then
-      install_with_system_pm curl file gcc gcc-c++ make procps-ng
+      local needed=()
+      have_cmd curl  || needed+=(curl)
+      have_cmd file  || needed+=(file)
+      have_cmd gcc   || needed+=(gcc gcc-c++)
+      have_cmd make  || needed+=(make)
+      have_cmd ps    || needed+=(procps-ng)
+      if [ ${#needed[@]} -gt 0 ]; then
+        install_with_system_pm "${needed[@]}"
+      fi
     fi
     run_as_user env NONINTERACTIVE=1 /bin/bash -c \
       "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
