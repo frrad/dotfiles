@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+apt_updated=0
+
 have_cmd() {
   command -v "$1" >/dev/null 2>&1
 }
@@ -18,9 +20,12 @@ brew_as_user() {
 }
 
 install_with_apt() {
-  local pkg="$1"
-  apt-get update
-  apt-get install -y "$pkg"
+  if [ "$apt_updated" -eq 0 ]; then
+    apt-get update
+    apt_updated=1
+  fi
+
+  apt-get install -y "$@"
 }
 
 install_homebrew_if_needed() {
@@ -35,8 +40,7 @@ ensure_linux_deps() {
   fi
 
   if ! have_cmd puppet; then
-    apt-get update
-    apt-get install -y puppet r10k
+    install_with_apt puppet r10k
   fi
 }
 
