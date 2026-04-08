@@ -41,7 +41,7 @@ jobs:
       - name: Install prerequisites
         run: |
           dnf groupinstall -y "Development Tools"
-          dnf install -y curl file git gzip procps-ng sudo shadow-utils tar
+          dnf install -y file git gzip procps-ng sudo shadow-utils tar
 
       - name: Create linuxbrew user
         run: useradd --create-home --home-dir /home/linuxbrew linuxbrew
