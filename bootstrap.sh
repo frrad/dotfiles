@@ -9,6 +9,14 @@ run_as_user() {
   sudo -Hiu "$SUDO_USER" -- "$@"
 }
 
+have_user_cmd() {
+  run_as_user sh -lc 'command -v "$1" >/dev/null 2>&1' sh "$1"
+}
+
+brew_as_user() {
+  run_as_user env PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin" brew "$@"
+}
+
 install_with_apt() {
   local pkg="$1"
   apt-get update
@@ -16,15 +24,8 @@ install_with_apt() {
 }
 
 install_homebrew_if_needed() {
-  if ! have_cmd brew; then
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-    # Add brew to PATH for the current shell if needed
-    if [ -x /opt/homebrew/bin/brew ]; then
-      eval "$(/opt/homebrew/bin/brew shellenv)"
-    elif [ -x /usr/local/bin/brew ]; then
-      eval "$(/usr/local/bin/brew shellenv)"
-    fi
+  if ! have_user_cmd brew; then
+    run_as_user /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
 }
 
@@ -42,16 +43,16 @@ ensure_linux_deps() {
 ensure_darwin_deps() {
   install_homebrew_if_needed
 
-  if ! have_cmd git; then
-    brew install git
+  if ! have_user_cmd git; then
+    brew_as_user install git
   fi
 
-  if ! have_cmd puppet; then
-    brew install puppet
+  if ! have_user_cmd puppet; then
+    brew_as_user install puppet
   fi
 
-  if ! have_cmd r10k; then
-    brew install r10k
+  if ! have_user_cmd r10k; then
+    brew_as_user install r10k
   fi
 }
 
