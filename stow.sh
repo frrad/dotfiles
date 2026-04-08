@@ -6,6 +6,11 @@ if ! command -v "$stow_bin" >/dev/null 2>&1; then
   stow_bin=stow
 fi
 
+if ! command -v "$stow_bin" >/dev/null 2>&1; then
+  echo "error: neither xstow nor stow found" >&2
+  exit 1
+fi
+
 for f in git emacs zsh ssh sqlite screen ispell
 do
   if ! "$stow_bin" "$f"; then
