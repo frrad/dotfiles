@@ -39,16 +39,20 @@ jobs:
     # fails before any install step can run. Bootstrap this job manually.
     steps:
       - name: Install prerequisites
-        run: dnf install -y git tar gzip sudo
+        run: dnf install -y git tar gzip sudo shadow-utils
+
+      - name: Create bootstrap user
+        run: useradd --create-home bootstrap
 
       - name: Clone repository
-        run: git clone https://github.com/${{ github.repository }} ~/dotfiles
+        run: |
+          git clone https://github.com/${{ github.repository }} /home/bootstrap/dotfiles
+          chown -R bootstrap:bootstrap /home/bootstrap/dotfiles
 
       - name: Checkout workflow revision
         run: |
-          cd ~/dotfiles
-          git fetch --no-tags origin ${{ github.sha }}
-          git checkout --detach ${{ github.sha }}
+          sudo -Hu bootstrap git -C /home/bootstrap/dotfiles fetch --no-tags origin ${{ github.sha }}
+          sudo -Hu bootstrap git -C /home/bootstrap/dotfiles checkout --detach ${{ github.sha }}
 
       - name: Run bootstrap
-        run: SUDO_USER=root sudo -E ~/dotfiles/bootstrap.sh
+        run: SUDO_USER=bootstrap sudo -E /home/bootstrap/dotfiles/bootstrap.sh
