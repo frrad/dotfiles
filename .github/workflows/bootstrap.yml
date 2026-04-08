@@ -1,0 +1,22 @@
+name: Bootstrap
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: dotfiles
+
+      - name: Move to ~/dotfiles
+        run: mv dotfiles ~/dotfiles
+
+      - name: Run bootstrap
+        run: sudo -E ~/dotfiles/bootstrap.sh
