@@ -43,18 +43,24 @@ jobs:
           dnf groupinstall -y "Development Tools"
           dnf install -y file git gzip procps-ng sudo shadow-utils tar
 
-      - name: Create linuxbrew user
-        run: useradd --create-home --home-dir /home/linuxbrew linuxbrew
+      - name: Create bootstrap user
+        run: |
+          useradd --create-home --home-dir /home/bootstrap bootstrap
+          echo 'bootstrap ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/bootstrap
+          chmod 440 /etc/sudoers.d/bootstrap
 
       - name: Clone repository
         run: |
-          git clone https://github.com/${{ github.repository }} /home/linuxbrew/dotfiles
-          chown -R linuxbrew:linuxbrew /home/linuxbrew/dotfiles
+          git clone https://github.com/${{ github.repository }} /home/bootstrap/dotfiles
+          chown -R bootstrap:bootstrap /home/bootstrap/dotfiles
 
       - name: Checkout workflow revision
         run: |
-          sudo -Hu linuxbrew git -C /home/linuxbrew/dotfiles fetch --no-tags origin ${{ github.sha }}
-          sudo -Hu linuxbrew git -C /home/linuxbrew/dotfiles checkout --detach ${{ github.sha }}
+          sudo -Hu bootstrap git -C /home/bootstrap/dotfiles fetch --no-tags origin ${{ github.sha }}
+          sudo -Hu bootstrap git -C /home/bootstrap/dotfiles checkout --detach ${{ github.sha }}
 
       - name: Run bootstrap
-        run: SUDO_USER=linuxbrew /home/linuxbrew/dotfiles/bootstrap.sh
+        run: |
+          su - bootstrap <<'EOF'
+          sudo /home/bootstrap/dotfiles/bootstrap.sh
+          EOF
