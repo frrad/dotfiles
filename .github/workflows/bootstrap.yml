@@ -37,4 +37,20 @@ jobs:
     container:
       image: amazonlinux:2023
 
-    steps: *bootstrap_steps
+    # The stock AL2023 container does not include tar, so actions/checkout
+    # fails before any install step can run. Bootstrap this job manually.
+    steps:
+      - name: Install prerequisites
+        run: dnf install -y git tar gzip sudo
+
+      - name: Clone repository
+        run: git clone https://github.com/${{ github.repository }} ~/dotfiles
+
+      - name: Checkout workflow revision
+        run: |
+          cd ~/dotfiles
+          git fetch --no-tags origin ${{ github.sha }}
+          git checkout --detach ${{ github.sha }}
+
+      - name: Run bootstrap
+        run: SUDO_USER=root sudo -E ~/dotfiles/bootstrap.sh
