@@ -8,5 +8,7 @@ fi
 
 for f in git emacs zsh ssh sqlite screen ispell
 do
-  "$stow_bin" "$f"
+  if ! "$stow_bin" "$f"; then
+    echo "warning: failed to stow $f; continuing" >&2
+  fi
 done
