@@ -39,20 +39,22 @@ jobs:
     # fails before any install step can run. Bootstrap this job manually.
     steps:
       - name: Install prerequisites
-        run: dnf install -y git tar gzip sudo shadow-utils
+        run: |
+          dnf groupinstall -y "Development Tools"
+          dnf install -y curl file git gzip procps-ng sudo shadow-utils tar
 
-      - name: Create bootstrap user
-        run: useradd --create-home bootstrap
+      - name: Create linuxbrew user
+        run: useradd --create-home --home-dir /home/linuxbrew linuxbrew
 
       - name: Clone repository
         run: |
-          git clone https://github.com/${{ github.repository }} /home/bootstrap/dotfiles
-          chown -R bootstrap:bootstrap /home/bootstrap/dotfiles
+          git clone https://github.com/${{ github.repository }} /home/linuxbrew/dotfiles
+          chown -R linuxbrew:linuxbrew /home/linuxbrew/dotfiles
 
       - name: Checkout workflow revision
         run: |
-          sudo -Hu bootstrap git -C /home/bootstrap/dotfiles fetch --no-tags origin ${{ github.sha }}
-          sudo -Hu bootstrap git -C /home/bootstrap/dotfiles checkout --detach ${{ github.sha }}
+          sudo -Hu linuxbrew git -C /home/linuxbrew/dotfiles fetch --no-tags origin ${{ github.sha }}
+          sudo -Hu linuxbrew git -C /home/linuxbrew/dotfiles checkout --detach ${{ github.sha }}
 
       - name: Run bootstrap
-        run: SUDO_USER=bootstrap sudo -E /home/bootstrap/dotfiles/bootstrap.sh
+        run: SUDO_USER=linuxbrew sudo -E /home/linuxbrew/dotfiles/bootstrap.sh

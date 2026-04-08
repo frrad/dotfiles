@@ -7,6 +7,7 @@ script_dir=
 target=
 user_home=
 os_name=
+linux_package_manager=
 
 have_cmd() {
   command -v "$1" >/dev/null 2>&1
@@ -17,12 +18,12 @@ run_as_user() {
 }
 
 have_user_cmd() {
-  run_as_user env PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin" \
+  run_as_user env PATH="/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:/usr/local/bin:/usr/bin:/bin" \
     sh -lc 'command -v "$1" >/dev/null 2>&1' sh "$1"
 }
 
 brew_as_user() {
-  run_as_user env PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin" brew "$@"
+  run_as_user env PATH="/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:/usr/local/bin:/usr/bin:/bin" brew "$@"
 }
 
 install_with_apt() {
@@ -40,12 +41,20 @@ install_with_brew() {
 
 install_homebrew_if_needed() {
   if ! have_user_cmd brew; then
-    run_as_user /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    run_as_user env NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
 }
 
 resolve_os() {
   os_name="$(uname -s)"
+
+  if [ "$os_name" = "Linux" ]; then
+    if have_cmd apt-get; then
+      linux_package_manager=apt
+    else
+      linux_package_manager=brew
+    fi
+  fi
 }
 
 resolve_script_dir() {
@@ -59,7 +68,17 @@ managed_cmd_exists() {
 
   case "$os_name" in
     Linux)
-      [ -n "$linux_check_cmd" ] && have_cmd "$linux_check_cmd"
+      case "$linux_package_manager" in
+        apt)
+          [ -n "$linux_check_cmd" ] && have_cmd "$linux_check_cmd"
+          ;;
+        brew)
+          [ -n "$darwin_check_cmd" ] && have_user_cmd "$darwin_check_cmd"
+          ;;
+        *)
+          return 1
+          ;;
+      esac
       ;;
     Darwin)
       [ -n "$darwin_check_cmd" ] && have_user_cmd "$darwin_check_cmd"
@@ -76,7 +95,17 @@ package_spec_for_current_os() {
 
   case "$os_name" in
     Linux)
-      printf '%s\n' "$apt_packages"
+      case "$linux_package_manager" in
+        apt)
+          printf '%s\n' "$apt_packages"
+          ;;
+        brew)
+          printf '%s\n' "$brew_packages"
+          ;;
+        *)
+          return 1
+          ;;
+      esac
       ;;
     Darwin)
       printf '%s\n' "$brew_packages"
@@ -102,9 +131,23 @@ resolve_target() {
 ensure_bootstrap_deps() {
   case "$os_name" in
     Linux)
-      if ! have_cmd git; then
-        install_with_apt git
-      fi
+      case "$linux_package_manager" in
+        apt)
+          if ! have_cmd git; then
+            install_with_apt git
+          fi
+          ;;
+        brew)
+          install_homebrew_if_needed
+          if ! have_user_cmd git; then
+            install_with_brew git
+          fi
+          ;;
+        *)
+          echo "Unsupported Linux package manager" >&2
+          exit 1
+          ;;
+      esac
       ;;
     Darwin)
       install_homebrew_if_needed
@@ -145,11 +188,11 @@ ensure_packages() {
     fi
 
     read -r -a package_args <<<"$package_spec"
-    case "$os_name" in
-      Linux)
+    case "$os_name:$linux_package_manager" in
+      Linux:apt)
         install_with_apt "${package_args[@]}" </dev/null
         ;;
-      Darwin)
+      Linux:brew|Darwin:*)
         install_with_brew "${package_args[@]}" </dev/null
         ;;
     esac
