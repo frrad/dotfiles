@@ -10,6 +10,18 @@ concurrency:
   group: bootstrap-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+bootstrap_steps: &bootstrap_steps
+  - name: Checkout
+    uses: actions/checkout@v6
+    with:
+      path: dotfiles
+
+  - name: Move to ~/dotfiles
+    run: mv dotfiles ~/dotfiles
+
+  - name: Run bootstrap
+    run: sudo -E ~/dotfiles/bootstrap.sh
+
 jobs:
   bootstrap:
     strategy:
@@ -18,31 +30,11 @@ jobs:
 
     runs-on: ${{ matrix.os }}
     
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-        with:
-          path: dotfiles
-
-      - name: Move to ~/dotfiles
-        run: mv dotfiles ~/dotfiles
-
-      - name: Run bootstrap
-        run: sudo -E ~/dotfiles/bootstrap.sh
+    steps: *bootstrap_steps
 
   bootstrap-amazon-linux:
     runs-on: ubuntu-latest
     container:
       image: amazonlinux:2023
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-        with:
-          path: dotfiles
-
-      - name: Move to ~/dotfiles
-        run: mv dotfiles ~/dotfiles
-
-      - name: Run bootstrap
-        run: sudo -E ~/dotfiles/bootstrap.sh
+    steps: *bootstrap_steps
