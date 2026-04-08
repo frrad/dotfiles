@@ -1,0 +1,31 @@
+name: Bootstrap
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+concurrency:
+  group: bootstrap-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  bootstrap:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          path: dotfiles
+
+      - name: Move to ~/dotfiles
+        run: mv dotfiles ~/dotfiles
+
+      - name: Run bootstrap
+        run: sudo -E ~/dotfiles/bootstrap.sh
