@@ -1,0 +1,25 @@
+# name|linux_check_cmd|darwin_check_cmd|apt_packages|brew_packages
+apt-file|apt-file||apt-file|
+binutils|strings|strings|binutils|binutils
+black|black|black|black|black
+colordiff|colordiff|colordiff|colordiff|colordiff
+dig|dig|dig|dnsutils|bind
+emacs|emacs|emacs|emacs-nox|emacs
+figlet|figlet|figlet|figlet|figlet
+fzf|fzf|fzf|fzf|fzf
+git|git|git|git|git
+graphviz|dot|dot|graphviz|graphviz
+ghostscript|gs|gs|ghostscript|ghostscript
+htop|htop|htop|htop|htop
+ispell|ispell||ispell|
+jq|jq|jq|jq|jq
+kpcli|kpcli||kpcli|
+make|make|make|make|make
+nano|nano|nano|nano|nano
+pip3|pip3|pip3|python3-pip python3-venv|python
+python3|python3|python3|python3-pip python3-venv|python
+rg|rg|rg|ripgrep|ripgrep
+screen|screen|screen|screen|screen
+stow|xstow|stow|xstow|stow
+tree|tree|tree|tree|tree
+zsh|zsh|zsh|zsh|zsh
