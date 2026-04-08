@@ -80,7 +80,7 @@ ensure_darwin_deps() {
   fi
 
   if ! have_puppet_tool r10k; then
-    "$(puppet_gem_tool)" install r10k
+    "$(puppet_gem_tool)" install r10k -v 4.0.0 --no-document
   fi
 }
 
