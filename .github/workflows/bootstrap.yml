@@ -57,4 +57,4 @@ jobs:
           sudo -Hu linuxbrew git -C /home/linuxbrew/dotfiles checkout --detach ${{ github.sha }}
 
       - name: Run bootstrap
-        run: SUDO_USER=linuxbrew sudo -E /home/linuxbrew/dotfiles/bootstrap.sh
+        run: SUDO_USER=linuxbrew /home/linuxbrew/dotfiles/bootstrap.sh
