@@ -35,6 +35,14 @@ puppet_tool() {
   fi
 }
 
+puppet_gem_tool() {
+  if have_cmd gem; then
+    printf '%s\n' gem
+  else
+    printf '/opt/puppetlabs/puppet/bin/gem\n'
+  fi
+}
+
 install_with_apt() {
   if [ "$apt_updated" -eq 0 ]; then
     apt-get update
@@ -67,8 +75,12 @@ ensure_darwin_deps() {
     brew_as_user install git
   fi
 
-  if ! have_puppet_tool puppet || ! have_puppet_tool r10k; then
+  if ! have_puppet_tool puppet; then
     brew_as_user install --cask puppetlabs/puppet/puppet-agent
+  fi
+
+  if ! have_puppet_tool r10k; then
+    "$(puppet_gem_tool)" install r10k
   fi
 }
 
