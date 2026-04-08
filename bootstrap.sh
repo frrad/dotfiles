@@ -5,6 +5,10 @@ have_cmd() {
   command -v "$1" >/dev/null 2>&1
 }
 
+run_as_user() {
+  sudo -Hiu "$SUDO_USER" -- "$@"
+}
+
 install_with_apt() {
   local pkg="$1"
   apt-get update
@@ -66,25 +70,45 @@ ensure_deps() {
   esac
 }
 
-if [ -z "${SUDO_USER:-}" ]; then
-  echo "bootstrap.sh must be run via sudo so SUDO_USER is available" >&2
-  exit 1
-fi
+require_sudo_context() {
+  if [ -z "${SUDO_USER:-}" ]; then
+    echo "bootstrap.sh must be run via sudo so SUDO_USER is available" >&2
+    exit 1
+  fi
+}
 
-user_home=$(sudo -Hiu "$SUDO_USER" sh -lc 'printf %s "$HOME"')
-target="${user_home}/dotfiles"
+resolve_target() {
+  local user_home
 
-ensure_deps
+  user_home=$(sudo -Hiu "$SUDO_USER" sh -lc 'printf %s "$HOME"')
+  target="${user_home}/dotfiles"
+}
 
+ensure_checkout_present() {
+  if [ ! -d "$target" ]; then
+    run_as_user git clone https://github.com/frrad/dotfiles.git "$target"
+  fi
+}
 
-if [ ! -d "$target" ]; then
-  sudo -u $SUDO_USER git clone https://github.com/frrad/dotfiles.git $target
-fi
+apply_puppet() {
+  cd "$target/puppet"
+  r10k puppetfile install
+  export FACTER_sudo_user="$SUDO_USER"
+  puppet apply --test --verbose "$target/puppet/main.pp" --modulepath="$target/puppet/modules"
+}
 
-cd ${target}/puppet
-r10k puppetfile install
-export FACTER_sudo_user=$SUDO_USER
-puppet apply --test --verbose $target/puppet/main.pp --modulepath=$target/puppet/modules
+run_stow() {
+  cd "$target"
+  run_as_user ./stow.sh
+}
 
-cd $target
-sudo -u $SUDO_USER ./stow.sh
+main() {
+  require_sudo_context
+  resolve_target
+  ensure_deps
+  ensure_checkout_present
+  apply_puppet
+  run_stow
+}
+
+main "$@"
