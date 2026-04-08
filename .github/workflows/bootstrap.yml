@@ -8,15 +8,14 @@ on:
 
 jobs:
   bootstrap:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
+    
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           path: dotfiles
-
-      - name: Move to ~/dotfiles
-        run: mv dotfiles ~/dotfiles
-
-      - name: Run bootstrap
-        run: sudo -E ~/dotfiles/bootstrap.sh
