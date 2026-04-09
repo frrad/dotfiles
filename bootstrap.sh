@@ -3,6 +3,7 @@ set -euo pipefail
 
 apt_updated=0
 package_manifest=
+pkg_manager=
 script_dir=
 target=
 user_home=
@@ -16,13 +17,18 @@ run_as_user() {
   sudo -Hu "$SUDO_USER" -- "$@"
 }
 
+# Explicit PATH for brew commands. Needed because brew installs to
+# user-local prefixes that aren't in root's PATH.
+brew_path="/home/linuxbrew/.linuxbrew/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
+
 have_user_cmd() {
-  run_as_user env PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin" \
+  # sh -lc '...' sh "$1" — the extra "sh" sets $0 so $1 is the argument.
+  run_as_user env PATH="$brew_path" \
     sh -lc 'command -v "$1" >/dev/null 2>&1' sh "$1"
 }
 
 brew_as_user() {
-  run_as_user env PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin" brew "$@"
+  run_as_user env PATH="$brew_path" brew "$@"
 }
 
 install_with_apt() {
@@ -38,14 +44,61 @@ install_with_brew() {
   brew_as_user install "$@"
 }
 
+# Install a package using whatever system package manager is available.
+# Used only for pre-brew bootstrap prerequisites (e.g. curl).
+install_with_system_pm() {
+  if have_cmd apt-get; then
+    install_with_apt "$@"
+  elif have_cmd dnf; then
+    dnf install -y "$@"
+  elif have_cmd yum; then
+    yum install -y "$@"
+  fi
+}
+
 install_homebrew_if_needed() {
   if ! have_user_cmd brew; then
-    run_as_user /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    # Homebrew on Linux requires a C toolchain and a handful of utilities.
+    # Only install what's missing to avoid conflicts (e.g. curl vs
+    # curl-minimal on Amazon Linux).
+    if [ "$os_name" = "Linux" ]; then
+      local needed=()
+      have_cmd curl  || needed+=(curl)
+      have_cmd file  || needed+=(file)
+      have_cmd gcc   || needed+=(gcc gcc-c++)
+      have_cmd make  || needed+=(make)
+      have_cmd ps    || needed+=(procps-ng)
+      if [ ${#needed[@]} -gt 0 ]; then
+        install_with_system_pm "${needed[@]}"
+      fi
+    fi
+    run_as_user env NONINTERACTIVE=1 /bin/bash -c \
+      "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
 }
 
 resolve_os() {
   os_name="$(uname -s)"
+}
+
+resolve_pkg_manager() {
+  # Non-apt Linux (e.g. Amazon Linux) uses Homebrew, same as macOS.
+  case "$os_name" in
+    Darwin)
+      pkg_manager="brew"
+      ;;
+    Linux)
+      if have_cmd apt-get; then
+        pkg_manager="apt"
+      else
+        pkg_manager="brew"
+      fi
+      ;;
+    *)
+      echo "Unsupported OS: $os_name" >&2
+      exit 1
+      ;;
+  esac
 }
 
 resolve_script_dir() {
@@ -54,39 +107,31 @@ resolve_script_dir() {
 }
 
 managed_cmd_exists() {
-  local linux_check_cmd="$1"
-  local darwin_check_cmd="$2"
+  local apt_check_cmd="$1"
+  local brew_check_cmd="$2"
 
-  case "$os_name" in
-    Linux)
-      [ -n "$linux_check_cmd" ] && have_cmd "$linux_check_cmd"
+  case "$pkg_manager" in
+    apt)
+      [ -n "$apt_check_cmd" ] && have_cmd "$apt_check_cmd"
       ;;
-    Darwin)
-      [ -n "$darwin_check_cmd" ] && have_user_cmd "$darwin_check_cmd"
-      ;;
-    *)
-      return 1
+    brew)
+      [ -n "$brew_check_cmd" ] && have_user_cmd "$brew_check_cmd"
       ;;
   esac
 }
 
-package_spec_for_current_os() {
+package_spec() {
   local apt_packages="$1"
   local brew_packages="$2"
 
-  case "$os_name" in
-    Linux)
-      printf '%s\n' "$apt_packages"
-      ;;
-    Darwin)
-      printf '%s\n' "$brew_packages"
-      ;;
-    *)
-      return 1
-      ;;
+  case "$pkg_manager" in
+    apt)  printf '%s\n' "$apt_packages" ;;
+    brew) printf '%s\n' "$brew_packages" ;;
   esac
 }
 
+# Must be run via sudo so we can install system packages as root
+# while using SUDO_USER to run user-level commands (brew, stow, etc.).
 require_sudo_context() {
   if [ -z "${SUDO_USER:-}" ]; then
     echo "bootstrap.sh must be run via sudo so SUDO_USER is available" >&2
@@ -100,21 +145,17 @@ resolve_target() {
 }
 
 ensure_bootstrap_deps() {
-  case "$os_name" in
-    Linux)
+  case "$pkg_manager" in
+    apt)
       if ! have_cmd git; then
         install_with_apt git
       fi
       ;;
-    Darwin)
+    brew)
       install_homebrew_if_needed
       if ! have_user_cmd git; then
         install_with_brew git
       fi
-      ;;
-    *)
-      echo "Unsupported OS: $os_name" >&2
-      exit 1
       ;;
   esac
 }
@@ -126,32 +167,29 @@ ensure_checkout_present() {
 }
 
 ensure_packages() {
-  local name linux_check_cmd darwin_check_cmd apt_packages brew_packages package_spec
+  local name apt_check_cmd brew_check_cmd apt_packages brew_packages
   local -a package_args
 
-  while IFS='|' read -r name linux_check_cmd darwin_check_cmd apt_packages brew_packages; do
+  # Fields: name|apt_check_cmd|brew_check_cmd|apt_packages|brew_packages
+  while IFS='|' read -r name apt_check_cmd brew_check_cmd apt_packages brew_packages; do
     if [ -z "$name" ] || [[ "$name" == \#* ]]; then
       continue
     fi
 
-    if managed_cmd_exists "$linux_check_cmd" "$darwin_check_cmd"; then
+    if managed_cmd_exists "$apt_check_cmd" "$brew_check_cmd"; then
       continue
     fi
 
-    package_spec=$(package_spec_for_current_os "$apt_packages" "$brew_packages")
-    if [ -z "$package_spec" ]; then
-      echo "Skipping $name on $os_name: no package mapping" >&2
+    pkg=$(package_spec "$apt_packages" "$brew_packages")
+    if [ -z "$pkg" ]; then
+      echo "Skipping $name on $os_name ($pkg_manager): no package mapping" >&2
       continue
     fi
 
-    read -r -a package_args <<<"$package_spec"
-    case "$os_name" in
-      Linux)
-        install_with_apt "${package_args[@]}" </dev/null
-        ;;
-      Darwin)
-        install_with_brew "${package_args[@]}" </dev/null
-        ;;
+    read -r -a package_args <<<"$pkg"
+    case "$pkg_manager" in
+      apt)  install_with_apt  "${package_args[@]}" </dev/null ;;
+      brew) install_with_brew "${package_args[@]}" </dev/null ;;
     esac
   done < "$package_manifest"
 }
@@ -171,12 +209,16 @@ ensure_ssh_key() {
 
 run_stow() {
   cd "$target"
-  run_as_user ./stow.sh
+  case "$pkg_manager" in
+    brew) run_as_user env PATH="$brew_path" ./stow.sh ;;
+    *)    run_as_user ./stow.sh ;;
+  esac
 }
 
 main() {
   require_sudo_context
   resolve_os
+  resolve_pkg_manager
   resolve_script_dir
   resolve_target
   ensure_bootstrap_deps

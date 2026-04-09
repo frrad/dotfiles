@@ -17,7 +17,7 @@ jobs:
         os: [ubuntu-latest, macos-latest]
 
     runs-on: ${{ matrix.os }}
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -29,3 +29,38 @@ jobs:
 
       - name: Run bootstrap
         run: sudo -E ~/dotfiles/bootstrap.sh
+
+  bootstrap-amazon-linux:
+    runs-on: ubuntu-latest
+    container:
+      image: amazonlinux:2023
+
+    # The stock AL2023 container does not include tar, so actions/checkout
+    # fails before any install step can run. Bootstrap this job manually.
+    steps:
+      - name: Install prerequisites
+        run: |
+          dnf groupinstall -y "Development Tools"
+          dnf install -y file git gzip procps-ng sudo shadow-utils tar
+
+      - name: Create bootstrap user
+        run: |
+          useradd --create-home --home-dir /home/bootstrap bootstrap
+          echo 'bootstrap ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/bootstrap
+          chmod 440 /etc/sudoers.d/bootstrap
+
+      - name: Clone repository
+        run: |
+          git clone https://github.com/${{ github.repository }} /home/bootstrap/dotfiles
+          chown -R bootstrap:bootstrap /home/bootstrap/dotfiles
+
+      - name: Checkout workflow revision
+        run: |
+          sudo -Hu bootstrap git -C /home/bootstrap/dotfiles fetch --no-tags origin ${{ github.sha }}
+          sudo -Hu bootstrap git -C /home/bootstrap/dotfiles checkout --detach ${{ github.sha }}
+
+      - name: Run bootstrap
+        run: |
+          su - bootstrap <<'EOF'
+          sudo /home/bootstrap/dotfiles/bootstrap.sh
+          EOF
