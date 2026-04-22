@@ -1,5 +1,8 @@
 {
   "model": "us.anthropic.claude-opus-4-6-v1",
   "effortLevel": "high",
-  "skipDangerousModePermissionPrompt": true
+  "skipDangerousModePermissionPrompt": true,
+  "env": {
+    "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1"
+  }
 }
