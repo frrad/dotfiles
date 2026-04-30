@@ -1,8 +1,18 @@
 {
+  "env": {
+    "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(git push:*)"
+    ],
+    "defaultMode": "acceptEdits"
+  },
   "model": "us.anthropic.claude-opus-4-6-v1",
   "effortLevel": "high",
   "skipDangerousModePermissionPrompt": true,
-  "env": {
-    "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1"
+  "theme": "light",
+  "enabledPlugins": {
+    "rust-analyzer-lsp@claude-plugins-official": true
   }
 }
