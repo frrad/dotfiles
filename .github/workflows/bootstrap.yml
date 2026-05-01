@@ -64,3 +64,23 @@ jobs:
           su - bootstrap <<'EOF'
           sudo /home/bootstrap/dotfiles/bootstrap.sh
           EOF
+
+  bootstrap-curl-pipe:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          path: dotfiles
+
+      - name: Move to ~/dotfiles
+        run: mv dotfiles ~/dotfiles
+
+      - name: Run bootstrap via pipe (simulates curl | sudo bash)
+        # BASH_SOURCE[0] is empty when bash reads from stdin, so
+        # resolve_script_dir falls back to CWD. Run from /tmp to ensure
+        # CWD != dotfiles dir - the same failure mode as `curl ... | sudo bash`.
+        run: |
+          cd /tmp
+          sudo bash < ~/dotfiles/bootstrap.sh
