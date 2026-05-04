@@ -35,7 +35,6 @@ HOST_COLOR="$(host_color_idx)"
 PROMPT="%F{196}%n%f@%F{${HOST_COLOR}}%m%f %F{yellow}%~%f %# "
 
 alias grep='grep --color=auto'
-alias diff='colordiff'
 alias ll='ls -lah'
 alias less='less -R'
 alias emacs="emacsclient -nw -a \"\" -c"
