@@ -4,7 +4,6 @@ set -euo pipefail
 apt_updated=0
 package_manifest=
 pkg_manager=
-script_dir=
 target=
 user_home=
 os_name=
@@ -101,11 +100,6 @@ resolve_pkg_manager() {
   esac
 }
 
-resolve_script_dir() {
-  script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-  package_manifest="${script_dir}/packages.tsv"
-}
-
 managed_cmd_exists() {
   local apt_check_cmd="$1"
   local brew_check_cmd="$2"
@@ -142,6 +136,7 @@ require_sudo_context() {
 resolve_target() {
   user_home=$(sudo -Hiu "$SUDO_USER" sh -lc 'printf %s "$HOME"')
   target="${user_home}/dotfiles"
+  package_manifest="${target}/packages.tsv"
 }
 
 ensure_bootstrap_deps() {
@@ -219,7 +214,6 @@ main() {
   require_sudo_context
   resolve_os
   resolve_pkg_manager
-  resolve_script_dir
   resolve_target
   ensure_bootstrap_deps
   ensure_checkout_present

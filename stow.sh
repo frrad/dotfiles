@@ -7,7 +7,8 @@ if ! command -v "$stow_bin" >/dev/null 2>&1; then
 fi
 
 failed=0
-for f in git emacs zsh ssh sqlite screen ispell claude tmux
+for f in git emacs zsh ssh sqlite screen ispell claude codex tmux
+
 do
   output=$("$stow_bin" "$f" 2>&1) || {
     # Conflicts with existing non-link targets are expected in CI
