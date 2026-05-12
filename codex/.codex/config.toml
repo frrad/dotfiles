@@ -2,9 +2,14 @@ model = "gpt-5.5"
 model_reasoning_effort = "xhigh"
 service_tier = "fast"
 project_doc_fallback_filenames = ["CLAUDE.md"]
+suppress_unstable_features_warning = true
 
 [tui.model_availability_nux]
 "gpt-5.5" = 4
 
 [notice]
 fast_default_opt_out = true
+
+[features]
+goals = true
+
