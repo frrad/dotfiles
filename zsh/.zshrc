@@ -74,3 +74,12 @@ elif [[ `uname` == "Darwin" ]]; then
 else
     echo 'Unknown OS!'
 fi
+
+cx() {
+  local repo_root=$(git rev-parse --show-toplevel) || return 1
+  local base=$(git symbolic-ref refs/remotes/origin/HEAD --short 2>/dev/null || echo "origin/main")
+  local name="${*:-$(openssl rand -hex 4)}"
+  local branch=$(echo "$name" | tr ' ' '-')
+  local worktree_path="$repo_root/.claude/worktrees/$branch"
+  git worktree add "$worktree_path" -b "$branch" "$base" && tmux new-session -s "$name" -c "$worktree_path" "codex --yolo"
+}
