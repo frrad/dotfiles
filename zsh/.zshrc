@@ -11,7 +11,6 @@ setopt nomatch
 setopt notify
 
 bindkey -e
-bindkey '^R' history-incremental-pattern-search-backward
 
 autoload -U colors && colors
 
@@ -45,6 +44,7 @@ alias socks='autossh -v -D 8080 -C -N'
 autoload -U select-word-style
 select-word-style bash
 
+export PERL_BADLANG=0
 export EDITOR="emacsclient -nw -a \"\" -c"
 export GOPATH=$HOME/go
 export PATH=$PATH:$HOME/.local/bin
@@ -59,12 +59,9 @@ sie () {
 
 sie "$HOME/.workrc"
 
-sie "/usr/share/doc/fzf/examples/key-bindings.zsh"
-sie "/usr/share/zsh/vendor-completions/_fzf"
-
-# mac
-sie "/usr/local/Cellar/fzf/0.22.0/shell/completion.zsh"
-sie "/usr/local/Cellar/fzf/0.22.0/shell/key-bindings.zsh"
+if command -v fzf &>/dev/null; then
+  eval "$(fzf --zsh)"
+fi
 
 # What OS are we running?
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
