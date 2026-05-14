@@ -4,3 +4,6 @@ flycheck_init.el
 /puppet/modules/
 claude/.claude/
 
+emacs/.emacs.d/.cache/
+emacs/.emacs.d/eln-cache/
+

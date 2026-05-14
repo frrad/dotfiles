@@ -106,7 +106,7 @@ managed_cmd_exists() {
 
   case "$pkg_manager" in
     apt)
-      [ -n "$apt_check_cmd" ] && have_cmd "$apt_check_cmd"
+      [ -n "$apt_check_cmd" ] && have_user_cmd "$apt_check_cmd"
       ;;
     brew)
       [ -n "$brew_check_cmd" ] && have_user_cmd "$brew_check_cmd"

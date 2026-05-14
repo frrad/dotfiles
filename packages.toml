@@ -70,3 +70,5 @@ apt_cmd = "xstow"
 [tree]
 
 [zsh]
+
+[tmux]
