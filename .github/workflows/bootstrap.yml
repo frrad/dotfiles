@@ -65,6 +65,30 @@ jobs:
           sudo /home/bootstrap/dotfiles/bootstrap.sh
           EOF
 
+  bootstrap-broken-login-profile:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          path: dotfiles
+
+      - name: Move to ~/dotfiles
+        run: mv dotfiles ~/dotfiles
+
+      - name: Inject bash-only syntax into /etc/profile.d (simulates cros-motd.sh)
+        run: |
+          echo 'broken_array=(one two three)' | sudo tee /etc/profile.d/broken-test.sh
+          # Confirm the injection actually breaks sh -lc (regression guard)
+          if sudo sh -lc 'echo ok' 2>/dev/null; then
+            echo "ERROR: expected sh -lc to fail with broken profile.d" >&2
+            exit 1
+          fi
+
+      - name: Run bootstrap
+        run: sudo -E ~/dotfiles/bootstrap.sh
+
   bootstrap-curl-pipe:
     runs-on: ubuntu-latest
 
