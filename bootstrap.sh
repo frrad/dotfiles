@@ -23,7 +23,7 @@ brew_path="/home/linuxbrew/.linuxbrew/bin:/opt/homebrew/bin:/usr/local/bin:/usr/
 have_user_cmd() {
   # sh -lc '...' sh "$1" — the extra "sh" sets $0 so $1 is the argument.
   run_as_user env PATH="$brew_path" \
-    sh -lc 'command -v "$1" >/dev/null 2>&1' sh "$1"
+    bash -c 'command -v "$1" >/dev/null 2>&1' bash "$1"
 }
 
 brew_as_user() {
@@ -134,7 +134,7 @@ require_sudo_context() {
 }
 
 resolve_target() {
-  user_home=$(sudo -Hiu "$SUDO_USER" sh -lc 'printf %s "$HOME"')
+  user_home=$(getent passwd "$SUDO_USER" | cut -d: -f6)
   target="${user_home}/dotfiles"
   package_manifest="${target}/packages.tsv"
 }
@@ -198,7 +198,7 @@ ensure_ssh_key() {
 
   run_as_user mkdir -p "$ssh_dir"
   if [ ! -f "$key_path" ]; then
-    run_as_user sh -lc 'ssh-keygen -t rsa -b 4096 -N "" -f "$1"' sh "$key_path"
+    run_as_user ssh-keygen -t rsa -b 4096 -N "" -f "$key_path"
   fi
 }
 
