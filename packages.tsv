@@ -21,6 +21,5 @@ python3|python3|python3|python3-pip python3-venv|python
 rg|rg|rg|ripgrep|ripgrep
 screen|screen|screen|screen|screen
 stow|xstow|stow|xstow|stow
-tmux|tmux|tmux|tmux|tmux
 tree|tree|tree|tree|tree
 zsh|zsh|zsh|zsh|zsh

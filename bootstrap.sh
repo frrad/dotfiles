@@ -100,22 +100,13 @@ resolve_pkg_manager() {
   esac
 }
 
-apt_pkgs_installed() {
-  local pkg
-  for pkg in $1; do
-    dpkg -s "$pkg" >/dev/null 2>&1 || return 1
-  done
-}
-
 managed_cmd_exists() {
   local apt_check_cmd="$1"
   local brew_check_cmd="$2"
-  local apt_packages="${3:-}"
 
   case "$pkg_manager" in
     apt)
-      { [ -n "$apt_check_cmd" ] && have_cmd "$apt_check_cmd"; } ||
-        { [ -n "$apt_packages" ] && apt_pkgs_installed "$apt_packages"; }
+      [ -n "$apt_check_cmd" ] && have_cmd "$apt_check_cmd"
       ;;
     brew)
       [ -n "$brew_check_cmd" ] && have_user_cmd "$brew_check_cmd"
@@ -180,7 +171,7 @@ ensure_packages() {
       continue
     fi
 
-    if managed_cmd_exists "$apt_check_cmd" "$brew_check_cmd" "$apt_packages"; then
+    if managed_cmd_exists "$apt_check_cmd" "$brew_check_cmd"; then
       continue
     fi
 
