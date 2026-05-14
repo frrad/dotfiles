@@ -134,7 +134,7 @@ require_sudo_context() {
 }
 
 resolve_target() {
-  user_home=$(awk -F: -v u="$SUDO_USER" '$1==u{print $6;exit}' /etc/passwd)
+  user_home=$(run_as_user printenv HOME)
   target="${user_home}/dotfiles"
   package_manifest="${target}/packages.tsv"
 }
