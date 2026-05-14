@@ -80,3 +80,5 @@ cx() {
   local worktree_path="$repo_root/.claude/worktrees/$branch"
   git worktree add "$worktree_path" -b "$branch" "$base" && tmux new-session -s "$name" -c "$worktree_path" "codex --yolo"
 }
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
