@@ -1,0 +1,4 @@
+interface:
+  display_name: "Fork"
+  short_description: "Fork worktree, branch, tmux, and Codex"
+  default_prompt: "Use $fork to create a new worktree, branch, tmux session, and forked Codex session for this task."
