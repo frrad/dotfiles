@@ -200,7 +200,7 @@ def create_worktree(config: ForkConfig, cwd: Path) -> None:
 
 
 def start_tmux(config: ForkConfig) -> list[str]:
-    codex_command = ["codex", "fork"]
+    codex_command = ["codex", "fork", "--yolo"]
     if config.session_id:
         codex_command.extend(["-C", str(config.worktree_path), config.session_id])
     else:

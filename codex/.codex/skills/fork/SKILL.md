@@ -19,7 +19,7 @@ By default, the script:
 2. Creates a new branch at that commit.
 3. Adds a new worktree for that branch.
 4. Starts a detached tmux session with its working directory set to the worktree.
-5. Runs `codex fork --last --all -C <worktree>` inside tmux.
+5. Runs `codex fork --yolo --last --all -C <worktree>` inside tmux.
 
 Report the resulting worktree path, branch name, tmux session name, and attach command to the user.
 
@@ -27,7 +27,7 @@ Report the resulting worktree path, branch name, tmux session name, and attach c
 
 Run from the repository or worktree the user wants to fork. If the user gives a task name, pass it with `--name`; otherwise let the script generate a timestamped name.
 
-Prefer the default `codex fork --last --all` behavior when the user says to fork "this" or "the current" session. `--all` avoids cwd filtering after switching into the new worktree. Pass `--session-id <uuid>` only when the user gives a specific Codex session id.
+Prefer the default `codex fork --yolo --last --all` behavior when the user says to fork "this" or "the current" session. `--all` avoids cwd filtering after switching into the new worktree. Pass `--session-id <uuid>` only when the user gives a specific Codex session id.
 
 Use `--branch <branch-name>` when the user requests an exact branch name. Use `--path <worktree-path>` when the user requests an exact worktree location.
 
