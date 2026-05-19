@@ -1,0 +1,74 @@
+# Package manifest. Fields default to the table name if omitted.
+#
+# cmd      = command to check on both platforms (default: name)
+# apt_cmd  = command to check on apt systems (default: cmd)
+# brew_cmd = command to check on brew systems (default: cmd)
+# apt      = apt package(s) to install — string or list (default: name, false = skip)
+# brew     = brew package to install (default: name, false = skip)
+
+[apt-file]
+brew = false
+
+[binutils]
+cmd = "strings"
+
+[black]
+
+[colordiff]
+
+[dig]
+apt = "dnsutils"
+brew = "bind"
+
+[emacs]
+apt = "emacs-nox"
+
+[figlet]
+
+[fzf]
+
+[ghostscript]
+cmd = "gs"
+
+[git]
+
+[graphviz]
+cmd = "dot"
+
+[htop]
+
+[ispell]
+brew = false
+
+[jq]
+
+[kpcli]
+brew = false
+
+[make]
+
+[nano]
+
+[pip3]
+apt = ["python3-pip", "python3-venv"]
+brew = "python"
+
+[python3]
+apt = ["python3-pip", "python3-venv"]
+brew = "python"
+
+[rg]
+apt = "ripgrep"
+brew = "ripgrep"
+
+[screen]
+
+[stow]
+apt = "xstow"
+apt_cmd = "xstow"
+
+[tree]
+
+[zsh]
+
+[tmux]
