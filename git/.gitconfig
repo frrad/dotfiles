@@ -7,6 +7,7 @@
 
 [user]
   name = Frederick Robinson
+  email = frederick.robinson@frrad.com
 
 # includeIf was introduced in git 2.13.0
 [includeIf "gitdir:~/Projects/"]
