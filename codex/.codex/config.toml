@@ -1,5 +1,3 @@
-model = "gpt-5.5"
-model_reasoning_effort = "xhigh"
 service_tier = "fast"
 project_doc_fallback_filenames = ["CLAUDE.md"]
 suppress_unstable_features_warning = true
