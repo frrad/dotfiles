@@ -11,9 +11,17 @@
 - Keep repos private unless told otherwise.
 
 ## PR Review Comments
+- When leaving a review, prefer inline comments anchored to the relevant line over a top-level comment. Only put a finding in the top-level body when it cannot be anchored — it concerns the PR as a whole, or the line it refers to is not part of the diff (GitHub rejects inline comments on unchanged lines).
+- Post inline comments as a single review with a `comments` array, not one at a time: `gh api repos/OWNER/REPO/pulls/PR_NUMBER/reviews -X POST --input review.json`, where each entry has `path`, `line`, `side` and `body`. One review means one notification instead of N.
 - When fixing inline comments on PRs, reply to the comment explaining what was changed, then resolve the comment thread when appropriate.
 - Reply to a review comment via REST: `gh api repos/OWNER/REPO/pulls/PR_NUMBER/comments/COMMENT_ID/replies -X POST -f body="..."`. The PR number is required in the path.
 - To resolve threads, use the GraphQL `resolveReviewThread` mutation. The `threadId` must be a `PRRT_...` (review thread ID), NOT a `PRRC_...` (review comment ID). Fetch thread IDs first via: `gh api graphql -f query='{ repository(owner:"O",name:"R") { pullRequest(number:N) { reviewThreads(first:50) { nodes { id comments(first:1) { nodes { body } } } } } } }'`
+
+## Python
+- ALWAYS add type annotations when writing or editing Python — every function signature (parameters and return type), including private helpers, tests, and throwaway scripts.
+- Use modern builtin generics and unions: `list[str]`, `dict[str, int]`, `X | None`. Never `typing.List`, `typing.Dict`, or `typing.Optional`.
+- Import ABCs like `Callable`, `Awaitable`, `Iterator`, and `Sequence` from `collections.abc`, not `typing`.
+- Prefer PEP 695 syntax for generics (`def f[T](x: T) -> T:`) over explicit `TypeVar` declarations.
 
 ## Testing
 - Prefer red-green TDD where it makes sense (write a failing test first, then make it pass, then refactor).
@@ -21,6 +29,3 @@
 
 ## Session
 - When the user does `/rename`, also run `tmux rename-session "<new name>"` to keep the tmux session name in sync.
-- When opening or starting work on a PR, check if the current Claude session name already contains a PR link. If not, append the PR URL to the current session name: run `tmux rename-session "<current name> <pr-url>"` yourself, and print a pasteable `/rename <current name> <pr-url>` for the user to run (Claude cannot invoke `/rename` directly).
-- "Current name" means the Claude session name (shown in the session-rename system reminder), not the worktree branch or any auto-generated identifier.
-- To find the current session name: read `~/.claude/sessions/*.json`, match on `cwd` matching the current working directory (or parent), and extract the `name` field. Example: `jq -r 'select(.cwd == "<cwd>") | .name' ~/.claude/sessions/*.json`.
