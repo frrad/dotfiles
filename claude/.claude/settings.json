@@ -6,13 +6,21 @@
     "allow": [
       "Bash(git push:*)"
     ],
-    "defaultMode": "acceptEdits"
+    "defaultMode": "auto"
   },
-  "model": "us.anthropic.claude-opus-4-6-v1",
-  "effortLevel": "high",
-  "skipDangerousModePermissionPrompt": true,
-  "theme": "light",
   "enabledPlugins": {
-    "rust-analyzer-lsp@claude-plugins-official": true
-  }
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "anki-upload@frrad-tools": true,
+    "whatsapp-macos-reader@frrad-tools": true
+  },
+  "effortLevel": "high",
+  "voice": {
+    "enabled": true,
+    "mode": "tap"
+  },
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "auto",
+  "agentPushNotifEnabled": true,
+  "voiceEnabled": true,
+  "switchModelsOnFlag": true
 }
