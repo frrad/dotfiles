@@ -13,3 +13,5 @@ fast_default_opt_out = true
 [features]
 goals = true
 
+[mcp_servers.beeper]
+command = "/home/frederick/.local/bin/beeper-mcp"
